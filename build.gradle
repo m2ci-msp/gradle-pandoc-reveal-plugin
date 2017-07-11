@@ -3,6 +3,9 @@ plugins {
     id 'groovy'
 }
 
+group 'org.m2ci.msp'
+version '0.1.0-SNAPSHOT'
+
 repositories {
     jcenter()
 }
