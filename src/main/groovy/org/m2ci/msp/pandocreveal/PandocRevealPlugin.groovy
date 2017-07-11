@@ -1,3 +1,5 @@
+package org.m2ci.msp.pandocreveal
+
 import org.gradle.api.*
 import org.gradle.api.plugins.BasePlugin
 import org.gradle.api.tasks.Copy

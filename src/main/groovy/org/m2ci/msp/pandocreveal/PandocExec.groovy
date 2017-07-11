@@ -1,3 +1,5 @@
+package org.m2ci.msp.pandocreveal
+
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.*
 

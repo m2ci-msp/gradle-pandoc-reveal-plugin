@@ -1,0 +1,13 @@
+plugins {
+    id 'java-gradle-plugin'
+    id 'groovy'
+}
+
+gradlePlugin {
+    plugins {
+        pandocRevealPlugin {
+            id = 'org.m2ci.msp.pandocreveal'
+            implementationClass = 'org.m2ci.msp.pandocreveal.PandocRevealPlugin'
+        }
+    }
+}
