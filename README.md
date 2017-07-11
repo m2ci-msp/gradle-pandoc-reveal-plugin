@@ -9,8 +9,9 @@ Compilation from Markdown to HTML5 using [Pandoc] and [reveal.js].
 Prerequisites
 -------------
 
-[Pandoc] must be installed.
+[Pandoc] and [Java] must be installed.
 
 [Gradle]: https://gradle.org
 [Pandoc]: http://pandoc.org/
 [reveal.js]: http://lab.hakim.se/reveal-js/
+[Java]: https://www.java.com/
