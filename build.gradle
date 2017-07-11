@@ -1,0 +1,28 @@
+plugins {
+    id 'java-gradle-plugin'
+    id 'groovy'
+}
+
+group 'org.m2ci.msp'
+version '0.1.0-SNAPSHOT'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    testCompile group: 'org.testng', name: 'testng', version: '6.9.6'
+}
+
+gradlePlugin {
+    plugins {
+        pandocRevealPlugin {
+            id = 'org.m2ci.msp.pandocreveal'
+            implementationClass = 'org.m2ci.msp.pandocreveal.PandocRevealPlugin'
+        }
+    }
+}
+
+test {
+    useTestNG()
+}

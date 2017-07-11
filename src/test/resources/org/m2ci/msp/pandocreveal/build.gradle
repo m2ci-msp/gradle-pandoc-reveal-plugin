@@ -1,0 +1,8 @@
+plugins {
+    id 'org.m2ci.msp.pandocreveal'
+}
+
+compileMarkdown{
+    markdownFile = file('slides.md')
+    htmlFile = file('actual.html')
+}
