@@ -7,12 +7,17 @@ import org.testng.annotations.*
 class PandocRevealPluginTest {
 
     GradleRunner provideGradle() {
-        GradleRunner.create().withProjectDir(File.createTempDir())
+        def projectDir = File.createTempDir()
+        new File(projectDir, 'build.gradle').withWriter {
+            it << this.class.getResourceAsStream('build.gradle')
+        }
+        GradleRunner.create().withPluginClasspath().withProjectDir(projectDir)
     }
 
     @Test
     void testPlugin() {
         def gradle = provideGradle()
-        assert gradle.build()
+        def result = gradle.build()
+        assert result
     }
 }
