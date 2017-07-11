@@ -1,10 +1,12 @@
 plugins {
     id 'java-gradle-plugin'
     id 'groovy'
+    id 'com.gradle.plugin-publish' version '0.9.7'
 }
 
 group 'org.m2ci.msp'
 version '0.1.0-SNAPSHOT'
+description 'Apply common build logic to a slideshow project using Pandoc and reveal.js'
 
 repositories {
     jcenter()
@@ -14,10 +16,14 @@ dependencies {
     testCompile group: 'org.testng', name: 'testng', version: '6.9.6'
 }
 
+ext {
+    pluginId = 'org.m2ci.msp.pandocreveal'
+}
+
 gradlePlugin {
     plugins {
         pandocRevealPlugin {
-            id = 'org.m2ci.msp.pandocreveal'
+            id = pluginId
             implementationClass = 'org.m2ci.msp.pandocreveal.PandocRevealPlugin'
         }
     }
@@ -27,5 +33,19 @@ test {
     useTestNG()
     testLogging {
         exceptionFormat = 'full'
+    }
+}
+
+pluginBundle {
+    website = 'https://github.com/m2ci-msp/gradle-pandoc-reveal-plugin'
+    vcsUrl = 'https://github.com/m2ci-msp/gradle-pandoc-reveal-plugin'
+    description = project.description
+    tags = ['slideshow', 'pandoc', 'reveal.js']
+
+    plugins {
+        pandocRevealPlugin {
+            id = pluginId
+            displayName = 'Gradle Pandoc reveal.js plugin'
+        }
     }
 }
