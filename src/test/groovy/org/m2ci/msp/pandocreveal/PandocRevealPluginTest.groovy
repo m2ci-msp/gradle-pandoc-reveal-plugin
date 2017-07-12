@@ -26,11 +26,8 @@ class PandocRevealPluginTest {
     @Test
     void testCompileMarkdown() {
         def gradle = provideGradle()
-        def result = gradle.withArguments('compileMarkdown').build()
+        def result = gradle.withArguments('testCompileMarkdown').build()
+        println result.output
         assert result
-        def actualFile = new File(gradle.projectDir, 'actual.html')
-        assert actualFile.exists()
-        def expectedFile = new File(gradle.projectDir, 'expected.html')
-//        assert expectedFile.text == actualFile.text
     }
 }

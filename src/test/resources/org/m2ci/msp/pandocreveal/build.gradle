@@ -2,7 +2,17 @@ plugins {
     id 'org.m2ci.msp.pandocreveal'
 }
 
-compileMarkdown{
+compileMarkdown {
     markdownFile = file('slides.md')
     htmlFile = file('actual.html')
+}
+
+task testCompileMarkdown {
+    dependsOn compileMarkdown
+    doLast {
+        def actualFile = file('actual.html')
+        assert actualFile.exists()
+        def expectedFile = file('expected.html')
+//        assert expectedFile.text == actualFile.text
+    }
 }
