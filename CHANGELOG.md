@@ -4,9 +4,13 @@ Gradle Pandoc reveal.js plugin
 [Unreleased]
 ------------
 
-# Changes
+## Added
 
-- Improved documentation 
+- Support for citations (requires `pandoc-citeproc`)
+
+## Changes
+
+- Improved documentation
 
 [v0.1.0] (2017-07-11)
 ---------------------
