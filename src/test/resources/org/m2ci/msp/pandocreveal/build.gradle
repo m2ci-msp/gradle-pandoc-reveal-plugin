@@ -5,6 +5,7 @@ plugins {
 compileMarkdown {
     markdownFile = file('slides.md')
     htmlFile = file('actual.html')
+    bibFile = file('refs.bib')
 }
 
 task testCompileMarkdown {

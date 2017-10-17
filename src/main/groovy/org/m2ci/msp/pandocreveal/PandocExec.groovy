@@ -8,13 +8,28 @@ class PandocExec extends DefaultTask {
     @InputFile
     File markdownFile
 
+    @Optional
+    @InputFile
+    File bibFile
+
+    @Optional
+    @InputFile
+    File cslFile
+
     @OutputFile
     File htmlFile
 
     @TaskAction
     void compile() {
+        def command = ['pandoc', '--standalone', '--smart', '--to', 'revealjs', markdownFile, '--output', htmlFile]
+        if (bibFile) {
+            command += ['--bibliography', bibFile]
+        }
+        if (cslFile) {
+            command += ['--csl', cslFile]
+        }
         project.exec {
-            commandLine 'pandoc', '--standalone', '--smart', '--to', 'revealjs', markdownFile, '--output', htmlFile
+            commandLine command
         }
     }
 }
