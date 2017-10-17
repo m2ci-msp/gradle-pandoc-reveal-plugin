@@ -2,4 +2,4 @@
 
 ## Bar
 
-Baz
+Baz [@baz]

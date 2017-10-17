@@ -5,6 +5,7 @@ plugins {
 compileMarkdown {
     markdownFile = file('slides.md')
     htmlFile = file('actual.html')
+    bibFile = file('refs.bib')
 }
 
 task testCompileMarkdown {
@@ -12,7 +13,9 @@ task testCompileMarkdown {
     doLast {
         def actualFile = file('actual.html')
         assert actualFile.exists()
+        def bibFile = file('refs.bib')
+        assert bibFile.exists()
         def expectedFile = file('expected.html')
-//        assert expectedFile.text == actualFile.text
+        assert actualFile.text.contains('(foo 2017)')
     }
 }
