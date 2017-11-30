@@ -13,7 +13,7 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'org.testng', name: 'testng', version: '6.9.6'
+    testCompile group: 'org.testng', name: 'testng', version: '6.13.1'
 }
 
 ext {
