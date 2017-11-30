@@ -4,6 +4,14 @@ Gradle Pandoc reveal.js plugin
 [Unreleased]
 ------------
 
+## Added
+
+- CI testing on Mac OSX
+
+## Fixed
+
+- Removed obsolete `--smart` option
+
 [v0.2.0] (2017-10-17)
 ---------------------
 
