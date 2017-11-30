@@ -23,7 +23,7 @@ class PandocRevealPlugin implements Plugin<Project> {
             revealJS
         }
 
-        project.ext.revealJsVersion = '3.5.0'
+        project.ext.revealJsVersion = '3.6.0'
 
         project.dependencies {
             revealJS group: 'se.hakimel.lab', name: 'reveal.js', version: project.revealJsVersion, ext: 'zip'

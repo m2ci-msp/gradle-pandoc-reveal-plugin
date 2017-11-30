@@ -8,6 +8,12 @@ Gradle Pandoc reveal.js plugin
 
 - CI testing on Mac OSX
 
+## Changed
+
+- Upgrade to reveal.js v3.6.0
+- Build with Gradle v4.3.1
+- Upgrade test dependency and plugin
+
 ## Fixed
 
 - Removed obsolete `--smart` option
