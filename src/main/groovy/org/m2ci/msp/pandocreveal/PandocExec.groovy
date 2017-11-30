@@ -21,7 +21,7 @@ class PandocExec extends DefaultTask {
 
     @TaskAction
     void compile() {
-        def command = ['pandoc', '--standalone', '--smart', '--to', 'revealjs', markdownFile, '--output', htmlFile]
+        def command = ['pandoc', '--standalone', '--to', 'revealjs', markdownFile, '--output', htmlFile]
         if (bibFile) {
             command += ['--bibliography', bibFile]
         }
