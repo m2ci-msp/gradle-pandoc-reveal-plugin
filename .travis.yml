@@ -6,10 +6,12 @@ branches:
     - master
 
 language: groovy
-jdk:
-#  - openjdk7
-#  - oraclejdk7
-  - oraclejdk8
+
+matrix:
+  include:
+    - os: linux
+      jdk: openjdk8
+    - os: osx
 
 addons:
   apt:
