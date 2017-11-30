@@ -1,21 +1,23 @@
-dist: trusty
-sudo: false
-
 branches:
   only:
     - master
 
 language: groovy
-jdk:
-#  - openjdk7
-#  - oraclejdk7
-  - oraclejdk8
+
+matrix:
+  include:
+    - os: linux
+      jdk: openjdk8
+    - os: osx
 
 addons:
   apt:
     packages:
     - pandoc
     - pandoc-citeproc
+
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install pandoc pandoc-citeproc; fi
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
