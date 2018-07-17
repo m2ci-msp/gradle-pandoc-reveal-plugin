@@ -8,6 +8,9 @@ class PandocRevealPlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
+
+        final String REVEALJS = 'revealJS'
+
         project.pluginManager.apply BasePlugin
 
         project.repositories {
@@ -19,18 +22,14 @@ class PandocRevealPlugin implements Plugin<Project> {
             }
         }
 
-        project.configurations {
-            revealJS
-        }
+        project.configurations.maybeCreate REVEALJS
 
         project.ext.revealJsVersion = '3.6.0'
 
-        project.dependencies {
-            revealJS group: 'se.hakimel.lab', name: 'reveal.js', version: project.revealJsVersion, ext: 'zip'
-        }
+        project.dependencies.add REVEALJS, [group: 'se.hakimel.lab', name: 'reveal.js', version: project.revealJsVersion, ext: 'zip']
 
-        project.task('revealJS', type: Copy) {
-            from project.configurations.revealJS.collect {
+        project.task(REVEALJS, type: Copy) {
+            from project.configurations.getByName(REVEALJS).collect {
                 project.zipTree(it)
             }
             into "$project.buildDir/reveal.js"
@@ -41,7 +40,7 @@ class PandocRevealPlugin implements Plugin<Project> {
         }
 
         project.task('compileMarkdown', type: PandocExec) {
-            dependsOn project.tasks.findByName('revealJS')
+            dependsOn project.tasks.findByName(REVEALJS)
             project.tasks.findByName('assemble').dependsOn it
         }
     }
