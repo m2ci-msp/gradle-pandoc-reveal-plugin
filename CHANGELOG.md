@@ -4,6 +4,11 @@ Gradle Pandoc reveal.js plugin
 [Unreleased]
 ------------
 
+## Changed
+
+- Build with Gradle v4.9
+- Use lazy configuration
+
 [v0.2.2] (2018-02-26)
 ---------------------
 

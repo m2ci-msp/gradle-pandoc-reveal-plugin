@@ -1,32 +1,33 @@
 package org.m2ci.msp.pandocreveal
 
 import org.gradle.api.DefaultTask
+import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.tasks.*
 
 class PandocExec extends DefaultTask {
 
     @InputFile
-    File markdownFile
+    RegularFileProperty markdownFile = newInputFile()
 
     @Optional
     @InputFile
-    File bibFile
+    RegularFileProperty bibFile = newInputFile()
 
     @Optional
     @InputFile
-    File cslFile
+    RegularFileProperty cslFile = newInputFile()
 
     @OutputFile
-    File htmlFile
+    RegularFileProperty htmlFile = newOutputFile()
 
     @TaskAction
     void compile() {
-        def command = ['pandoc', '--standalone', '--to', 'revealjs', markdownFile, '--output', htmlFile]
-        if (bibFile) {
-            command += ['--bibliography', bibFile]
+        def command = ['pandoc', '--standalone', '--to', 'revealjs', markdownFile.get().asFile, '--output', htmlFile.get().asFile]
+        if (bibFile.getOrNull()) {
+            command += ['--bibliography', bibFile.get().asFile]
         }
-        if (cslFile) {
-            command += ['--csl', cslFile]
+        if (cslFile.getOrNull()) {
+            command += ['--csl', cslFile.get().asFile]
         }
         project.exec {
             commandLine command

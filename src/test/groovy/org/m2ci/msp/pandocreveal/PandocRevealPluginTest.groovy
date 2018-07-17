@@ -30,4 +30,12 @@ class PandocRevealPluginTest {
         println result.output
         assert result
     }
+
+    @Test
+    void testAssemble() {
+        def gradle = provideGradle()
+        def result = gradle.withArguments('assemble').build()
+        println result.output
+        assert result.tasks.find { it.path == ':compileMarkdown' }
+    }
 }
