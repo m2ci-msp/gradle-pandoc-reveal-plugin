@@ -28,7 +28,7 @@ class PandocRevealPlugin implements Plugin<Project> {
 
         project.dependencies.add REVEALJS, [group: 'se.hakimel.lab', name: 'reveal.js', version: project.revealJsVersion, ext: 'zip']
 
-        project.task(REVEALJS, type: Copy) {
+        project.tasks.register REVEALJS, Copy, {
             from project.configurations.getByName(REVEALJS).collect {
                 project.zipTree(it)
             }
@@ -39,9 +39,12 @@ class PandocRevealPlugin implements Plugin<Project> {
             includeEmptyDirs = false
         }
 
-        project.task('compileMarkdown', type: PandocExec) {
-            dependsOn project.tasks.findByName(REVEALJS)
-            project.tasks.findByName('assemble').dependsOn it
+        project.tasks.register 'compileMarkdown', PandocExec, {
+            dependsOn project.tasks.named(REVEALJS)
+        }
+
+        project.tasks.named('assemble').configure {
+            dependsOn 'compileMarkdown'
         }
     }
 }
