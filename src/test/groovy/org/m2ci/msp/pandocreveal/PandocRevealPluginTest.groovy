@@ -24,9 +24,9 @@ class PandocRevealPluginTest {
     }
 
     @Test
-    void testCompileMarkdown() {
+    void testCompileReveal() {
         def gradle = provideGradle()
-        def result = gradle.withArguments('testCompileMarkdown').build()
+        def result = gradle.withArguments('testCompileReveal').build()
         println result.output
         assert result
     }
@@ -36,6 +36,6 @@ class PandocRevealPluginTest {
         def gradle = provideGradle()
         def result = gradle.withArguments('assemble').build()
         println result.output
-        assert result.tasks.find { it.path == ':compileMarkdown' }
+        assert result.tasks.find { it.path == ':compileReveal' }
     }
 }

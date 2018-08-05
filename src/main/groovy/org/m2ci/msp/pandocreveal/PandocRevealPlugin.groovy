@@ -2,7 +2,7 @@ package org.m2ci.msp.pandocreveal
 
 import org.gradle.api.*
 import org.gradle.api.plugins.BasePlugin
-import org.gradle.api.tasks.Copy
+import org.gradle.api.tasks.bundling.Zip
 
 class PandocRevealPlugin implements Plugin<Project> {
 
@@ -28,23 +28,17 @@ class PandocRevealPlugin implements Plugin<Project> {
 
         project.dependencies.add REVEALJS, [group: 'se.hakimel.lab', name: 'reveal.js', version: project.revealJsVersion, ext: 'zip']
 
-        project.tasks.register REVEALJS, Copy, {
-            from project.configurations.getByName(REVEALJS).collect {
-                project.zipTree(it)
-            }
-            into "$project.buildDir/reveal.js"
-            eachFile {
-                it.path = it.path - "reveal.js-$project.revealJsVersion/"
-            }
-            includeEmptyDirs = false
+        project.tasks.register 'compileReveal', PandocRevealCompile, {
+            revealJsFiles = project.files(project.configurations.getByName(REVEALJS))
+            destDir = project.layout.buildDirectory.dir('slides')
         }
 
-        project.tasks.register 'compileMarkdown', PandocExec, {
-            dependsOn project.tasks.named(REVEALJS)
+        project.tasks.register 'packageReveal', Zip, {
+            from project.tasks.named('compileReveal').get().destDir
         }
 
-        project.tasks.named('assemble').configure {
-            dependsOn 'compileMarkdown'
+        project.artifacts {
+            'default' project.tasks.named('packageReveal')
         }
     }
 }
