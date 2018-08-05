@@ -8,6 +8,8 @@ Gradle Pandoc reveal.js plugin
 
 - Build with Gradle v4.9
 - Use lazy configuration
+- renamed compile task name to `compileReveal`
+- reveal.js and HTML generated in same destination directory
 
 [v0.2.2] (2018-02-26)
 ---------------------

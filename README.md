@@ -16,14 +16,15 @@ Usage
 
 See [here](https://plugins.gradle.org/plugin/org.m2ci.msp.pandocreveal) for usage instructions.
 
-When applying the plugin, the `compileMarkdown` task must be configured with a valid markdown source file and HTML target file (will be created):
+When applying the plugin, the `compileReveal` task must be configured with a valid markdown source file:
 
 ```gradle
-compileMarkdown {
+compileReveal {
   markdownFile = file("source.md")
-  htmlFile = file("$buildDir/target.md")
 }
 ```
+
+The generated slideshow will be created in `compileReveal.destDir` (default: `layout.buildDirectory.dir('slides')`)
 
 [Gradle]: https://gradle.org
 [Pandoc]: http://pandoc.org/
