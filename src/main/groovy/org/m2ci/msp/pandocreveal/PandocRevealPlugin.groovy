@@ -2,7 +2,7 @@ package org.m2ci.msp.pandocreveal
 
 import org.gradle.api.*
 import org.gradle.api.plugins.BasePlugin
-import org.gradle.api.tasks.Copy
+import org.gradle.api.tasks.bundling.Zip
 
 class PandocRevealPlugin implements Plugin<Project> {
 
@@ -33,8 +33,12 @@ class PandocRevealPlugin implements Plugin<Project> {
             destDir = project.layout.buildDirectory.dir('slides')
         }
 
-        project.tasks.named('assemble').configure {
-            dependsOn 'compileReveal'
+        project.tasks.register 'packageReveal', Zip, {
+            from project.tasks.named('compileReveal').get().destDir
+        }
+
+        project.artifacts {
+            'default' project.tasks.named('packageReveal')
         }
     }
 }
