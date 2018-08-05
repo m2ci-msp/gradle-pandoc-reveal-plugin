@@ -28,19 +28,9 @@ class PandocRevealPlugin implements Plugin<Project> {
 
         project.dependencies.add REVEALJS, [group: 'se.hakimel.lab', name: 'reveal.js', version: project.revealJsVersion, ext: 'zip']
 
-        project.tasks.register REVEALJS, Copy, {
-            from project.configurations.getByName(REVEALJS).collect {
-                project.zipTree(it)
-            }
-            into "$project.buildDir/reveal.js"
-            eachFile {
-                it.path = it.path - "reveal.js-$project.revealJsVersion/"
-            }
-            includeEmptyDirs = false
-        }
-
         project.tasks.register 'compileReveal', PandocRevealCompile, {
-            dependsOn project.tasks.named(REVEALJS)
+            revealJsFiles = project.files(project.configurations.getByName(REVEALJS))
+            destDir = project.layout.buildDirectory.dir('slides')
         }
 
         project.tasks.named('assemble').configure {

@@ -1,28 +1,40 @@
 package org.m2ci.msp.pandocreveal
 
 import org.gradle.api.DefaultTask
+import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.tasks.*
 
 class PandocRevealCompile extends DefaultTask {
 
     @InputFile
-    RegularFileProperty markdownFile = newInputFile()
+    final RegularFileProperty markdownFile = newInputFile()
+
+    @InputFiles
+    FileCollection revealJsFiles = project.files()
 
     @Optional
     @InputFile
-    RegularFileProperty bibFile = newInputFile()
+    final RegularFileProperty bibFile = newInputFile()
 
     @Optional
     @InputFile
-    RegularFileProperty cslFile = newInputFile()
+    final RegularFileProperty cslFile = newInputFile()
 
-    @OutputFile
-    RegularFileProperty htmlFile = newOutputFile()
+    @OutputDirectory
+    final DirectoryProperty destDir = newOutputDirectory()
 
     @TaskAction
     void compile() {
-        def command = ['pandoc', '--standalone', '--to', 'revealjs', markdownFile.get().asFile, '--output', htmlFile.get().asFile]
+        project.copy {
+            from revealJsFiles.collect {
+                project.zipTree(it)
+            }
+            into destDir
+            includeEmptyDirs = false
+        }
+        def command = ['pandoc', '--standalone', '--to', 'revealjs', markdownFile.get().asFile, '--output', destDir.file('index.html').get().asFile]
         if (bibFile.getOrNull()) {
             command += ['--bibliography', bibFile.get().asFile]
         }

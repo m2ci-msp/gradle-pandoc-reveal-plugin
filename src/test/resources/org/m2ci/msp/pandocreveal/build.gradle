@@ -4,14 +4,14 @@ plugins {
 
 compileReveal {
     markdownFile = file('slides.md')
-    htmlFile = file('actual.html')
     bibFile = file('refs.bib')
+    destDir = file("$buildDir/output")
 }
 
 task testCompileReveal {
     dependsOn compileReveal
     doLast {
-        def actualFile = file('actual.html')
+        def actualFile = file("$buildDir/output/index.html")
         assert actualFile.exists()
         def bibFile = file('refs.bib')
         assert bibFile.exists()
