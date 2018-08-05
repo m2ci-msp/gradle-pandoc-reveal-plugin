@@ -39,12 +39,12 @@ class PandocRevealPlugin implements Plugin<Project> {
             includeEmptyDirs = false
         }
 
-        project.tasks.register 'compileMarkdown', PandocExec, {
+        project.tasks.register 'compileReveal', PandocRevealCompile, {
             dependsOn project.tasks.named(REVEALJS)
         }
 
         project.tasks.named('assemble').configure {
-            dependsOn 'compileMarkdown'
+            dependsOn 'compileReveal'
         }
     }
 }

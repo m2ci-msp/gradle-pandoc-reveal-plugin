@@ -2,14 +2,14 @@ plugins {
     id 'org.m2ci.msp.pandocreveal'
 }
 
-compileMarkdown {
+compileReveal {
     markdownFile = file('slides.md')
     htmlFile = file('actual.html')
     bibFile = file('refs.bib')
 }
 
-task testCompileMarkdown {
-    dependsOn compileMarkdown
+task testCompileReveal {
+    dependsOn compileReveal
     doLast {
         def actualFile = file('actual.html')
         assert actualFile.exists()

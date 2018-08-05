@@ -4,7 +4,7 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.tasks.*
 
-class PandocExec extends DefaultTask {
+class PandocRevealCompile extends DefaultTask {
 
     @InputFile
     RegularFileProperty markdownFile = newInputFile()
