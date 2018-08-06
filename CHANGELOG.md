@@ -4,6 +4,10 @@ Gradle Pandoc reveal.js plugin
 [Unreleased]
 ------------
 
+## Added
+
+- optional extra assets as file collection
+
 ## Changed
 
 - Build with Gradle v4.9

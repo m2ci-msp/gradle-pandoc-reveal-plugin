@@ -15,6 +15,10 @@ class PandocRevealCompile extends DefaultTask {
     FileCollection revealJsFiles = project.files()
 
     @Optional
+    @InputFiles
+    FileCollection assetFiles = project.files()
+
+    @Optional
     @InputFile
     final RegularFileProperty bibFile = newInputFile()
 
@@ -30,6 +34,9 @@ class PandocRevealCompile extends DefaultTask {
         project.copy {
             from revealJsFiles.collect {
                 project.zipTree(it)
+            }
+            if (assetFiles) {
+                from assetFiles
             }
             into destDir
             includeEmptyDirs = false
