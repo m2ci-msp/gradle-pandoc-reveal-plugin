@@ -8,7 +8,8 @@ class PandocRevealPluginTest {
 
     GradleRunner provideGradle() {
         def projectDir = File.createTempDir()
-        ['build.gradle', 'slides.md', 'refs.bib', 'expected.html'].each { resourceName ->
+        new File(projectDir, 'assets').mkdirs()
+        ['build.gradle', 'slides.md', 'refs.bib', 'expected.html', 'assets/asset.txt'].each { resourceName ->
             new File(projectDir, resourceName).withWriter {
                 it << this.class.getResourceAsStream(resourceName)
             }

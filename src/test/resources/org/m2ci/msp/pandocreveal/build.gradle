@@ -2,10 +2,19 @@ plugins {
     id 'org.m2ci.msp.pandocreveal'
 }
 
+task makeAsset {
+    def destFile = file('anotherAsset.txt')
+    outputs.files destFile
+    doLast {
+        destFile.text = 'foo'
+    }
+}
+
 compileReveal {
     markdownFile = file('slides.md')
     bibFile = file('refs.bib')
     destDir = file("$buildDir/output")
+    assetFiles = fileTree('.').include('assets/**') + files(makeAsset)
 }
 
 task testCompileReveal {
@@ -15,6 +24,10 @@ task testCompileReveal {
         assert actualFile.exists()
         def bibFile = file('refs.bib')
         assert bibFile.exists()
+        def assetFiles = files("$buildDir/output/assets/asset.txt", "$buildDir/output/anotherAsset.txt")
+        assetFiles.each {
+            assert it.exists()
+        }
         def expectedFile = file('expected.html')
         assert actualFile.text.contains('(foo 2017)')
     }
