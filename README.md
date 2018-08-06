@@ -20,7 +20,10 @@ When applying the plugin, the `compileReveal` task must be configured with a val
 
 ```gradle
 compileReveal {
-  markdownFile = file("source.md")
+  markdownFile = file('src/source.md')
+  // optionally, additional assets:
+  assetFiles = files('some/asset.txt', tasks.findByName('assetProducingTask')) +
+    fileTree('src').include('assets/**')
 }
 ```
 
