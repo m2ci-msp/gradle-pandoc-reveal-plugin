@@ -1,7 +1,7 @@
 plugins {
     id 'java-gradle-plugin'
     id 'groovy'
-    id 'com.gradle.plugin-publish' version '0.9.10'
+    id 'com.gradle.plugin-publish' version '0.10.0'
 }
 
 group 'org.m2ci.msp'
@@ -17,14 +17,10 @@ dependencies {
     testCompile group: 'org.testng', name: 'testng', version: '6.14.2'
 }
 
-ext {
-    pluginId = 'org.m2ci.msp.pandocreveal'
-}
-
 gradlePlugin {
     plugins {
         pandocRevealPlugin {
-            id = pluginId
+            id = 'org.m2ci.msp.pandocreveal'
             implementationClass = 'org.m2ci.msp.pandocreveal.PandocRevealPlugin'
         }
     }
@@ -45,7 +41,6 @@ pluginBundle {
 
     plugins {
         pandocRevealPlugin {
-            id = pluginId
             displayName = 'Gradle Pandoc reveal.js plugin'
         }
     }
