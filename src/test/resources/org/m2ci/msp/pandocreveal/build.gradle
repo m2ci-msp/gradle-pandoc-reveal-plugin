@@ -12,6 +12,7 @@ task makeAsset {
 
 compileReveal {
     markdownFile = file('slides.md')
+    headerFile = file('header.yaml')
     bibFile = file('refs.bib')
     destDir = file("$buildDir/output")
     assetFiles = fileTree('.').include('assets/**') + files(makeAsset)

@@ -6,6 +6,7 @@ Gradle Pandoc reveal.js plugin
 
 ## Added
 
+- optionally, provide header as separate YAML file
 - optional extra assets as file collection
 
 ## Changed

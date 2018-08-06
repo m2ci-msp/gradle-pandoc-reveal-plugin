@@ -21,6 +21,10 @@ When applying the plugin, the `compileReveal` task must be configured with a val
 ```gradle
 compileReveal {
   markdownFile = file('src/source.md')
+
+  // optionally, YAML header in separate file:
+  headerFile = file('src/header.yaml')
+
   // optionally, additional assets:
   assetFiles = files('some/asset.txt', tasks.findByName('assetProducingTask')) +
     fileTree('src').include('assets/**')
