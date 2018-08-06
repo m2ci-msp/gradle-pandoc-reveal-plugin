@@ -11,6 +11,7 @@ Gradle Pandoc reveal.js plugin
 
 ## Changed
 
+- Upgrade to reveal.js v3.7.0
 - Build with Gradle v4.9
 - Use lazy configuration
 - renamed compile task name to `compileReveal`
