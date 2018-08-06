@@ -14,7 +14,7 @@ repositories {
 
 dependencies {
     compile group: 'org.yaml', name: 'snakeyaml', version: '1.21'
-    testCompile group: 'org.testng', name: 'testng', version: '6.14.2'
+    testCompile group: 'org.testng', name: 'testng', version: '6.14.3'
 }
 
 gradlePlugin {
