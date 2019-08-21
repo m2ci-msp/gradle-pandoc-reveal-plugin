@@ -45,6 +45,8 @@ class PandocRevealCompile extends DefaultTask {
                 options.defaultFlowStyle = DumperOptions.FlowStyle.BLOCK
                 def yaml = new Yaml(options)
                 def header = yaml.load(headerFile.get().asFile.newReader('UTF-8'))
+                if (header.date instanceof Date)
+                    header.date = header.date.format('EEE, MMM dd, yyyy')
                 writer.println '---'
                 yaml.dump header, writer
                 writer.println '...'
