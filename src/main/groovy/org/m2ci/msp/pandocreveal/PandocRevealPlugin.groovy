@@ -16,7 +16,7 @@ class PandocRevealPlugin implements Plugin<Project> {
         project.repositories {
             ivy {
                 url 'https://github.com/hakimel'
-                layout 'pattern', {
+                patternLayout {
                     artifact '[module]/archive/[revision].[ext]'
                 }
             }

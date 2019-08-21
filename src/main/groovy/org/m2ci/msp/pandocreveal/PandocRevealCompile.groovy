@@ -11,11 +11,11 @@ import org.yaml.snakeyaml.Yaml
 class PandocRevealCompile extends DefaultTask {
 
     @InputFile
-    final RegularFileProperty markdownFile = newInputFile()
+    final RegularFileProperty markdownFile = project.objects.fileProperty()
 
     @Optional
     @InputFile
-    final RegularFileProperty headerFile = newInputFile()
+    final RegularFileProperty headerFile = project.objects.fileProperty()
 
     @InputFiles
     FileCollection revealJsFiles = project.files()
@@ -26,14 +26,14 @@ class PandocRevealCompile extends DefaultTask {
 
     @Optional
     @InputFile
-    final RegularFileProperty bibFile = newInputFile()
+    final RegularFileProperty bibFile = project.objects.fileProperty()
 
     @Optional
     @InputFile
-    final RegularFileProperty cslFile = newInputFile()
+    final RegularFileProperty cslFile = project.objects.fileProperty()
 
     @OutputDirectory
-    final DirectoryProperty destDir = newOutputDirectory()
+    final DirectoryProperty destDir = project.objects.directoryProperty()
 
     @TaskAction
     void compile() {

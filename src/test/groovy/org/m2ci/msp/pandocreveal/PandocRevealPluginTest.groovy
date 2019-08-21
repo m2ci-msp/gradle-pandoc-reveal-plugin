@@ -36,7 +36,7 @@ class PandocRevealPluginTest {
     @Test(dataProvider = 'tasks')
     void testTasks(taskName) {
         def gradle = provideGradle()
-        def result = gradle.withArguments(taskName).build()
+        def result = gradle.withArguments('--warning-mode', 'all', taskName).build()
         println result.output
         assert result
     }
