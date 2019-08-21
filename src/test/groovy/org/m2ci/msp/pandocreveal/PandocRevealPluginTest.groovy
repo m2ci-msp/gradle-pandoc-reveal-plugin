@@ -24,19 +24,19 @@ class PandocRevealPluginTest {
         assert result
     }
 
-    @Test
-    void testCompileReveal() {
-        def gradle = provideGradle()
-        def result = gradle.withArguments('testCompileReveal').build()
-        println result.output
-        assert result
+    @DataProvider
+    Object[][] tasks() {
+        [
+                ['testCompileReveal'],
+                ['assemble']
+        ]
     }
 
-    @Test
-    void testAssemble() {
+    @Test(dataProvider = 'tasks')
+    void testTasks(taskName) {
         def gradle = provideGradle()
-        def result = gradle.withArguments('assemble').build()
+        def result = gradle.withArguments(taskName).build()
         println result.output
-        assert result.tasks.find { it.path == ':compileReveal' }
+        assert result
     }
 }
