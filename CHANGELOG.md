@@ -4,6 +4,10 @@ Gradle Pandoc reveal.js plugin
 [Unreleased]
 ------------
 
+### Added
+
+- ISO dates (e.g., `date: 2019-08-21`) in YAML header are properly formatted on title slide (i.e., "Wed, Aug 21, 2019")
+
 ### Changed
 
 - Upgrade to reveal.js v3.8.0
