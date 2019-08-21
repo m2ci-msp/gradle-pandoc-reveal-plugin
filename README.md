@@ -34,6 +34,6 @@ compileReveal {
 The generated slideshow will be created in `compileReveal.destDir` (default: `layout.buildDirectory.dir('slides')`)
 
 [Gradle]: https://gradle.org
-[Pandoc]: http://pandoc.org/
-[reveal.js]: http://lab.hakim.se/reveal-js/
+[Pandoc]: https://pandoc.org/
+[reveal.js]: https://revealjs.com/
 [Java]: https://www.java.com/
