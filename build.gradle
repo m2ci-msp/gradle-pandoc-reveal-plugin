@@ -1,7 +1,7 @@
 plugins {
     id 'java-gradle-plugin'
     id 'groovy'
-    id 'com.gradle.plugin-publish' version '0.10.0'
+    id 'com.gradle.plugin-publish' version '0.10.1'
 }
 
 group 'org.m2ci.msp'
@@ -13,8 +13,8 @@ repositories {
 }
 
 dependencies {
-    compile group: 'org.yaml', name: 'snakeyaml', version: '1.21'
-    testCompile group: 'org.testng', name: 'testng', version: '6.14.3'
+    compile group: 'org.yaml', name: 'snakeyaml', version: '1.25'
+    testCompile group: 'org.testng', name: 'testng', version: '7.0.0'
 }
 
 gradlePlugin {
