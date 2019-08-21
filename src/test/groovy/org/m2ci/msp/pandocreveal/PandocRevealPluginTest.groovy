@@ -28,7 +28,8 @@ class PandocRevealPluginTest {
     Object[][] tasks() {
         [
                 ['testCompileReveal'],
-                ['assemble']
+                ['assemble'],
+                ['testDate']
         ]
     }
 
