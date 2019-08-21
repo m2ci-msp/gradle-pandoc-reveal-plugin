@@ -45,7 +45,7 @@ task testDate {
     doLast {
         def htmlFile = file("$buildDir/output/index.html")
         def html = org.jsoup.Jsoup.parse(htmlFile, null)
-        def actual = html.select('p.date').first().text()
+        def actual = html.select('div.slides section').first().select('*.date').text()
         def dateLine = compileReveal.headerFile.get().asFile.readLines().find { it.startsWith 'date:' } as String
         def date = Date.parse('yyyy-MM-dd', dateLine.tokenize(':').last().trim())
         def expected = date.format('EEE, MMM dd, yyyy')
