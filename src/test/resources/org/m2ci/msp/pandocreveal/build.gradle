@@ -1,3 +1,9 @@
+buildscript {
+    dependencies {
+        classpath group: 'org.jsoup', name: 'jsoup', version: '1.12.1'
+    }
+}
+
 plugins {
     id 'org.m2ci.msp.pandocreveal'
 }
