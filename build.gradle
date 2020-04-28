@@ -13,9 +13,9 @@ repositories {
 }
 
 dependencies {
-    compile group: 'org.yaml', name: 'snakeyaml', version: '1.25'
-    testCompile group: 'org.testng', name: 'testng', version: '7.0.0'
-    testRuntime group: 'org.jsoup', name: 'jsoup', version: '1.12.1'
+    implementation group: 'org.yaml', name: 'snakeyaml', version: '1.25'
+    testImplementation group: 'org.testng', name: 'testng', version: '7.0.0'
+    testRuntimeOnly group: 'org.jsoup', name: 'jsoup', version: '1.12.1'
 }
 
 gradlePlugin {
