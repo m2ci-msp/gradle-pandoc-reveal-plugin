@@ -11,6 +11,8 @@ Prerequisites
 
 [Pandoc] and [Java] must be installed.
 
+This plugin requires Gradle v6.2 or higher.
+
 Usage
 -----
 
