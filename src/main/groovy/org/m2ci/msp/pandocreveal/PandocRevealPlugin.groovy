@@ -1,6 +1,7 @@
 package org.m2ci.msp.pandocreveal
 
-import org.gradle.api.*
+import org.gradle.api.Plugin
+import org.gradle.api.Project
 import org.gradle.api.plugins.BasePlugin
 import org.gradle.api.tasks.bundling.Zip
 
@@ -14,10 +15,21 @@ class PandocRevealPlugin implements Plugin<Project> {
         project.pluginManager.apply BasePlugin
 
         project.repositories {
-            ivy {
-                url 'https://github.com/hakimel'
-                patternLayout {
-                    artifact '[module]/archive/[revision].[ext]'
+            exclusiveContent {
+                forRepository {
+                    ivy {
+                        name 'GitHubHakimel'
+                        url 'https://github.com/hakimel'
+                        patternLayout {
+                            artifact '[module]/archive/[revision].[ext]'
+                        }
+                        metadataSources {
+                            artifact()
+                        }
+                    }
+                }
+                filter {
+                    includeGroup 'se.hakimel.lab'
                 }
             }
         }
