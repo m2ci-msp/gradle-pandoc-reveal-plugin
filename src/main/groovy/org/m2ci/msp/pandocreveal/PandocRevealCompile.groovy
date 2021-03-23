@@ -66,7 +66,7 @@ class PandocRevealCompile extends DefaultTask {
         def command = ['pandoc', '--standalone', '--to', 'revealjs', '-V', "revealjs-url=reveal.js-$project.revealJsVersion",
                        srcFile, '--output', destDir.file('index.html').get().asFile]
         if (bibFile.getOrNull()) {
-            command += ['--bibliography', bibFile.get().asFile]
+            command += ['--citeproc', '--bibliography', bibFile.get().asFile]
         }
         if (cslFile.getOrNull()) {
             command += ['--csl', cslFile.get().asFile]
