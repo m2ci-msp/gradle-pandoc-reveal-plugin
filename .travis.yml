@@ -9,6 +9,7 @@ matrix:
     - os: linux
       jdk: openjdk8
     - os: osx
+      osx_image: xcode12
 
 addons:
   apt:
