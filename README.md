@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/m2ci-msp/gradle-pandoc-reveal-plugin.svg?branch=master)](https://travis-ci.org/m2ci-msp/gradle-pandoc-reveal-plugin)
+[![CI](https://github.com/m2ci-msp/gradle-pandoc-reveal-plugin/actions/workflows/main.yml/badge.svg)](https://github.com/m2ci-msp/gradle-pandoc-reveal-plugin/actions/workflows/main.yml)
 
 Gradle Pandoc reveal.js plugin
 ==============================
