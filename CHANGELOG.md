@@ -6,6 +6,7 @@ Gradle Pandoc reveal.js plugin
 
 ### Changed
 
+- Switch from Travis CI to GitHub Actions
 - Build with Gradle v6.3
 - Upgrade dependencies
 - [all changes since v0.3.1]
