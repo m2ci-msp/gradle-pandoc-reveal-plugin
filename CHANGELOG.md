@@ -4,6 +4,10 @@ Gradle Pandoc reveal.js plugin
 [Unreleased]
 ------------
 
+### Added
+
+- Testing on Java 17
+
 ### Changed
 
 - Switch from Travis CI to GitHub Actions
