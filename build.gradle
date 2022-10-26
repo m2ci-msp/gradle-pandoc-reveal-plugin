@@ -9,13 +9,13 @@ version '0.4.0-SNAPSHOT'
 description 'Apply common build logic to a slideshow project using Pandoc and reveal.js'
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
-    implementation group: 'org.yaml', name: 'snakeyaml', version: '1.26'
-    testImplementation group: 'org.testng', name: 'testng', version: '7.1.0'
-    testRuntimeOnly group: 'org.jsoup', name: 'jsoup', version: '1.13.1'
+    implementation group: 'org.yaml', name: 'snakeyaml', version: '1.33'
+    testImplementation group: 'org.testng', name: 'testng', version: '7.5'
+    testRuntimeOnly group: 'org.jsoup', name: 'jsoup', version: '1.15.3'
 }
 
 gradlePlugin {
