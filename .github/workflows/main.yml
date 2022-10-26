@@ -16,14 +16,15 @@ jobs:
         java_version:
           - 8
           - 11
+          - 17
     runs-on: ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
  
-      - uses: actions/setup-java@v2
+      - uses: actions/setup-java@v3
         with:
-          distribution: adopt
+          distribution: zulu
           java-version: ${{ matrix.java_version }}
 
       - name: Install required Linux packages
@@ -36,22 +37,6 @@ jobs:
             pandoc \
             pandoc-citeproc
 
-      - name: Cache Gradle packages
-        uses: actions/cache@v2
+      - uses: gradle/gradle-build-action@v2
         with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-
-      - name: Build with Gradle
-        env:
-          GRADLE_OPTS: -Dorg.gradle.daemon=false
-        run: ./gradlew build
-
-      - name: Cleanup Gradle Cache
-        run: |
-          rm -f ~/.gradle/caches/modules-2/modules-2.lock
-          rm -f ~/.gradle/caches/modules-2/gc.properties
+          arguments: build
