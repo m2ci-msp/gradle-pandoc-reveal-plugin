@@ -1,7 +1,10 @@
 package org.m2ci.msp.pandocreveal
 
 import org.gradle.testkit.runner.GradleRunner
-import org.testng.annotations.*
+import org.testng.annotations.DataProvider
+import org.testng.annotations.Test
+
+import static org.gradle.testkit.runner.TaskOutcome.SUCCESS
 
 @Test
 class PandocRevealPluginTest {
@@ -37,6 +40,6 @@ class PandocRevealPluginTest {
     void testTasks(taskName) {
         def gradle = provideGradle()
         def result = gradle.withArguments('--warning-mode', 'all', taskName).build()
-        assert result
+        assert result.task(":$taskName").outcome == SUCCESS
     }
 }
