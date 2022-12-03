@@ -14,7 +14,7 @@ class PandocRevealPluginTest {
                 it << this.class.getResourceAsStream(resourceName)
             }
         }
-        GradleRunner.create().withPluginClasspath().withProjectDir(projectDir)
+        GradleRunner.create().withPluginClasspath().withProjectDir(projectDir).forwardOutput()
     }
 
     @Test
@@ -37,7 +37,6 @@ class PandocRevealPluginTest {
     void testTasks(taskName) {
         def gradle = provideGradle()
         def result = gradle.withArguments('--warning-mode', 'all', taskName).build()
-        println result.output
         assert result
     }
 }
