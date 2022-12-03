@@ -43,6 +43,10 @@ jobs:
             pandoc \
             pandoc-citeproc
 
+      - if: runner.os == 'macOS'
+        run: |
+          brew install pandoc
+
       - uses: gradle/gradle-build-action@v2
         with:
           arguments: build --warning-mode all
