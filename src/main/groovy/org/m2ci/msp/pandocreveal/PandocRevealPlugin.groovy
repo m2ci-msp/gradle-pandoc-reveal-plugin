@@ -14,6 +14,8 @@ class PandocRevealPlugin implements Plugin<Project> {
 
         project.pluginManager.apply BasePlugin
 
+        project.extensions.create('pandoc', PandocExtension)
+
         project.repositories {
             exclusiveContent {
                 forRepository {

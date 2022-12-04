@@ -27,6 +27,7 @@ class PandocRevealPluginTest {
     @DataProvider
     Object[][] tasks() {
         [
+                ['testPandoc'],
                 ['testCompileReveal'],
                 ['assemble'],
                 ['testDate']

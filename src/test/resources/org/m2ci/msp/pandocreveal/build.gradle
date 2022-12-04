@@ -8,6 +8,17 @@ plugins {
     id 'org.m2ci.msp.pandocreveal'
 }
 
+pandoc {
+    binary = file('/usr/bin/pandoc')
+}
+
+task testPandoc {
+    doLast {
+        def pandocBinary = pandoc.binary.get().asFile
+        assert pandocBinary.canExecute()
+    }
+}
+
 import java.text.SimpleDateFormat
 
 task makeAsset {
