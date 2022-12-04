@@ -77,6 +77,7 @@ class PandocRevealCompile extends DefaultTask {
         ]
         if (bibFile.getOrNull()) {
             command += [
+                    '--citeproc',
                     '--bibliography', bibFile.get().asFile
             ]
         }
