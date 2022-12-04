@@ -4,6 +4,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.BasePlugin
 import org.gradle.api.tasks.bundling.Zip
+import org.gradle.internal.os.OperatingSystem
 
 class PandocRevealPlugin implements Plugin<Project> {
 
@@ -14,9 +15,25 @@ class PandocRevealPlugin implements Plugin<Project> {
 
         project.pluginManager.apply BasePlugin
 
-        project.extensions.create('pandoc', PandocExtension)
-
         project.repositories {
+            exclusiveContent {
+                forRepository {
+                    ivy {
+                        name 'GitHubJgm'
+                        url 'https://github.com/jgm'
+                        patternLayout {
+                            artifact '[module]/releases/download/[revision]/[module]-[revision]-[classifier].[ext]'
+                        }
+                        metadataSources {
+                            artifact()
+                        }
+                    }
+                }
+                filter {
+                    includeGroup 'org.pandoc'
+                }
+            }
+
             exclusiveContent {
                 forRepository {
                     ivy {
@@ -36,10 +53,22 @@ class PandocRevealPlugin implements Plugin<Project> {
             }
         }
 
+        def pandocConfig = project.configurations.create('pandoc')
+
+        project.tasks.register('pandoc', UnpackPandoc) {
+            config.set pandocConfig
+            version.set '2.9.2.1'
+        }
+
         project.configurations.maybeCreate REVEALJS
 
         project.ext.revealJsVersion = '3.8.0'
 
+        switch (OperatingSystem.current()) {
+            case { it.isLinux() }:
+                project.dependencies.add('pandoc', [group: 'org.pandoc', name: 'pandoc', version: project.pandoc.version.get(), classifier: 'linux-amd64', ext: 'tar.gz'])
+                break
+        }
         project.dependencies.add REVEALJS, [group: 'se.hakimel.lab', name: 'reveal.js', version: project.revealJsVersion, ext: 'zip']
 
         project.tasks.register 'compileReveal', PandocRevealCompile, {
