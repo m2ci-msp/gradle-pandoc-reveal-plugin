@@ -12,6 +12,7 @@ task testPandoc {
     dependsOn pandoc
     doLast {
         def pandocBinary = pandoc.binary.get().asFile
+        assert pandocBinary.exists()
         assert pandocBinary.canExecute()
         def output = new ByteArrayOutputStream()
         exec {
