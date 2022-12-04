@@ -67,13 +67,23 @@ class PandocRevealCompile extends DefaultTask {
             into destDir
             includeEmptyDirs = false
         }
-        def command = [pandocBinary.get(), '--standalone', '--to', 'revealjs', '-V', "revealjs-url=reveal.js-$project.revealJsVersion",
-                       srcFile, '--output', destDir.file('index.html').get().asFile]
+        def command = [
+                pandocBinary.get(),
+                '--standalone',
+                '--to', 'revealjs',
+                '--variable', "revealjs-url=reveal.js-$project.revealJsVersion",
+                '--output', destDir.file('index.html').get().asFile,
+                srcFile
+        ]
         if (bibFile.getOrNull()) {
-            command += ['--bibliography', bibFile.get().asFile]
+            command += [
+                    '--bibliography', bibFile.get().asFile
+            ]
         }
         if (cslFile.getOrNull()) {
-            command += ['--csl', cslFile.get().asFile]
+            command += [
+                    '--csl', cslFile.get().asFile
+            ]
         }
         project.exec {
             commandLine command
