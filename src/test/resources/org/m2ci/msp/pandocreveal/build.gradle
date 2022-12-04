@@ -9,7 +9,7 @@ plugins {
 }
 
 pandoc {
-    version = '2.5'
+    version = '2.9.2.1'
     binary = file('/usr/bin/pandoc')
 }
 
