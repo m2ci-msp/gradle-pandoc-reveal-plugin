@@ -8,6 +8,21 @@ plugins {
     id 'org.m2ci.msp.pandocreveal'
 }
 
+task testPandoc {
+    dependsOn pandoc
+    doLast {
+        def pandocBinary = pandoc.binary.get().asFile
+        assert pandocBinary.exists()
+        assert pandocBinary.canExecute()
+        def output = new ByteArrayOutputStream()
+        exec {
+            commandLine pandocBinary, '--version'
+            standardOutput = output
+        }
+        assert output.toString().readLines().first().split().last() == pandoc.version.get()
+    }
+}
+
 import java.text.SimpleDateFormat
 
 task makeAsset {

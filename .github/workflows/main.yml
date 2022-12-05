@@ -34,16 +34,6 @@ jobs:
           distribution: zulu
           java-version: ${{ matrix.java_version }}
 
-      - name: Install required Linux packages
-        if: ${{ runner.os == 'Linux' }}
-        env:
-          DEBIAN_FRONTEND: noninteractive
-        run: |
-          sudo apt-get -qq update
-          sudo apt-get -qq install --no-install-recommends \
-            pandoc \
-            pandoc-citeproc
-
       - if: runner.os == 'macOS'
         run: |
           brew install pandoc

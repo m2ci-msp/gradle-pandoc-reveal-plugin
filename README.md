@@ -9,7 +9,7 @@ Compilation from Markdown to HTML5 using [Pandoc] and [reveal.js].
 Prerequisites
 -------------
 
-[Pandoc] and [Java] must be installed.
+[Java] must be installed.
 
 This plugin requires Gradle v6.2 or higher.
 
