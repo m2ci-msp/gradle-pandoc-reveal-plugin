@@ -13,10 +13,16 @@ jobs:
       matrix:
         os:
           - ubuntu-latest
+          - macos-latest
         java_version:
           - 8
           - 11
           - 17
+        exclude:
+          - os: macos-latest
+            java_version: 8
+          - os: macos-latest
+            java_version: 17
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -26,16 +32,6 @@ jobs:
         with:
           distribution: zulu
           java-version: ${{ matrix.java_version }}
-
-      - name: Install required Linux packages
-        if: ${{ runner.os == 'Linux' }}
-        env:
-          DEBIAN_FRONTEND: noninteractive
-        run: |
-          sudo apt-get -qq update
-          sudo apt-get -qq install --no-install-recommends \
-            pandoc \
-            pandoc-citeproc
 
       - uses: gradle/gradle-build-action@v2
         with:

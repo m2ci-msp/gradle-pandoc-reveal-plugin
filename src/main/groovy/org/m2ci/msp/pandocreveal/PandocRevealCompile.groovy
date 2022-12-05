@@ -11,6 +11,10 @@ import org.yaml.snakeyaml.Yaml
 class PandocRevealCompile extends DefaultTask {
 
     @InputFile
+    final RegularFileProperty pandocBinary = project.objects.fileProperty()
+            .convention(project.pandoc.binary)
+
+    @InputFile
     final RegularFileProperty markdownFile = project.objects.fileProperty()
 
     @Optional
@@ -63,13 +67,24 @@ class PandocRevealCompile extends DefaultTask {
             into destDir
             includeEmptyDirs = false
         }
-        def command = ['pandoc', '--standalone', '--to', 'revealjs', '-V', "revealjs-url=reveal.js-$project.revealJsVersion",
-                       srcFile, '--output', destDir.file('index.html').get().asFile]
+        def command = [
+                pandocBinary.get(),
+                '--standalone',
+                '--to', 'revealjs',
+                '--variable', "revealjs-url=reveal.js-$project.revealJsVersion",
+                '--output', destDir.file('index.html').get().asFile,
+                srcFile
+        ]
         if (bibFile.getOrNull()) {
-            command += ['--bibliography', bibFile.get().asFile]
+            command += [
+                    '--citeproc',
+                    '--bibliography', bibFile.get().asFile
+            ]
         }
         if (cslFile.getOrNull()) {
-            command += ['--csl', cslFile.get().asFile]
+            command += [
+                    '--csl', cslFile.get().asFile
+            ]
         }
         project.exec {
             commandLine command
