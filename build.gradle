@@ -46,3 +46,33 @@ test {
         }
     }
 }
+
+publishing {
+    publications {
+        withType(MavenPublication) {
+            pom {
+                name = 'Pandoc Reveal.js Plugin'
+                description = project.description
+                url = project.url
+                inceptionYear = '2017'
+                licenses {
+                    license {
+                        name = 'Apache License 2.0'
+                        url = 'https://www.apache.org/licenses/LICENSE-2.0'
+                    }
+                }
+                developers {
+                    developer {
+                        name = 'Ingmar Steiner'
+                        url = 'https://github.com/psibre'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:https://github.com/m2ci-msp/gradle-pandoc-reveal-plugin.git'
+                    developerConnection = 'scm:git:git@github.com/m2ci-msp/gradle-pandoc-reveal-plugin.git'
+                    url = project.url
+                }
+            }
+        }
+    }
+}
