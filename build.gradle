@@ -18,6 +18,19 @@ dependencies {
     testRuntimeOnly group: 'org.jsoup', name: 'jsoup', version: '1.15.3'
 }
 
+pluginBundle {
+    website = 'https://github.com/m2ci-msp/gradle-pandoc-reveal-plugin'
+    vcsUrl = 'https://github.com/m2ci-msp/gradle-pandoc-reveal-plugin'
+    description = project.description
+    tags = ['slideshow', 'pandoc', 'reveal.js']
+
+    plugins {
+        pandocRevealPlugin {
+            displayName = 'Gradle Pandoc reveal.js plugin'
+        }
+    }
+}
+
 gradlePlugin {
     plugins {
         pandocRevealPlugin {
@@ -35,19 +48,6 @@ test {
         exceptionFormat = 'full'
         info {
             showStandardStreams = true
-        }
-    }
-}
-
-pluginBundle {
-    website = 'https://github.com/m2ci-msp/gradle-pandoc-reveal-plugin'
-    vcsUrl = 'https://github.com/m2ci-msp/gradle-pandoc-reveal-plugin'
-    description = project.description
-    tags = ['slideshow', 'pandoc', 'reveal.js']
-
-    plugins {
-        pandocRevealPlugin {
-            displayName = 'Gradle Pandoc reveal.js plugin'
         }
     }
 }
