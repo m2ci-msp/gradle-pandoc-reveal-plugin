@@ -6,6 +6,7 @@ plugins {
 group 'org.m2ci.msp'
 version '0.4.0-SNAPSHOT'
 description 'Apply common build logic to a slideshow project using Pandoc and reveal.js'
+ext.url = 'https://github.com/m2ci-msp/gradle-pandoc-reveal-plugin'
 
 repositories {
     mavenCentral()
@@ -18,8 +19,8 @@ dependencies {
 }
 
 pluginBundle {
-    website = 'https://github.com/m2ci-msp/gradle-pandoc-reveal-plugin'
-    vcsUrl = 'https://github.com/m2ci-msp/gradle-pandoc-reveal-plugin'
+    website = project.url
+    vcsUrl = project.url
     description = project.description
     tags = ['slideshow', 'pandoc', 'reveal.js']
 }
