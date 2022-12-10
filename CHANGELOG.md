@@ -1,8 +1,8 @@
 Gradle Pandoc reveal.js plugin
 ==============================
 
-[Unreleased]
-------------
+[v0.4.0] (2022-12-10)
+---------------------
 
 ### Added
 
@@ -98,12 +98,12 @@ Gradle Pandoc reveal.js plugin
 
 - Markdown to HTML5 conversion with installed Pandoc and reveal.js v3.5.0
 
-[Unreleased]: https://github.com/m2ci-msp/gradle-pandoc-reveal-plugin/tree/master
-[all changes since v0.3.1]: https://github.com/m2ci-msp/gradle-pandoc-reveal-plugin/compare/v0.3.1...HEAD
+[v0.4.0]: https://github.com/m2ci-msp/gradle-pandoc-reveal-plugin/releases/tag/v0.4.0
+[all changes since v0.3.1]: https://github.com/m2ci-msp/gradle-pandoc-reveal-plugin/compare/v0.3.1...v0.4.0
 [v0.3.1]: https://github.com/m2ci-msp/gradle-pandoc-reveal-plugin/releases/tag/v0.3.1
-[all changes since v0.3.0]: https://github.com/m2ci-msp/gradle-pandoc-reveal-plugin/compare/v0.3.0...0.3.1
+[all changes since v0.3.0]: https://github.com/m2ci-msp/gradle-pandoc-reveal-plugin/compare/v0.3.0...v0.3.1
 [v0.3.0]: https://github.com/m2ci-msp/gradle-pandoc-reveal-plugin/releases/tag/v0.3.0
-[all changes since v0.2.2]: https://github.com/m2ci-msp/gradle-pandoc-reveal-plugin/compare/v0.2.2...0.3.0
+[all changes since v0.2.2]: https://github.com/m2ci-msp/gradle-pandoc-reveal-plugin/compare/v0.2.2...v0.3.0
 [v0.2.2]: https://github.com/m2ci-msp/gradle-pandoc-reveal-plugin/releases/tag/v0.2.2
 [all changes since v0.2.1]: https://github.com/m2ci-msp/gradle-pandoc-reveal-plugin/compare/v0.2.1...v0.2.2
 [v0.2.1]: https://github.com/m2ci-msp/gradle-pandoc-reveal-plugin/releases/tag/v0.2.1
