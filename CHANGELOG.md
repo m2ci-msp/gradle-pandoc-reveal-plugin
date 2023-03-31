@@ -4,8 +4,13 @@ Gradle Pandoc reveal.js plugin
 [Unreleased]
 ------------
 
+### Fixed
+
+- Configuration cache error with Gradle 8
+
 ### Changed
 
+- Build with Gradle v8.0.2
 - [all changes since v0.4.0]
 
 [v0.4.0] (2022-12-10)

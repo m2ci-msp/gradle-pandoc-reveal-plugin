@@ -1,7 +1,6 @@
 package org.m2ci.msp.pandocreveal
 
 import org.gradle.api.DefaultTask
-import org.gradle.api.artifacts.Configuration
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
@@ -11,7 +10,7 @@ import org.gradle.api.tasks.TaskAction
 class UnpackPandoc extends DefaultTask {
 
     @Input
-    final Property<Configuration> config = project.objects.property(Configuration)
+    final Property<String> config = project.objects.property(String)
 
     @Input
     final Property<String> version = project.objects.property(String)
@@ -24,7 +23,7 @@ class UnpackPandoc extends DefaultTask {
     void unpack() {
         project.copy {
             into temporaryDir
-            from config
+            from project.configurations.named(config.get())
             filesMatching('*.tar.gz') { tarDetails ->
                 project.copy {
                     into temporaryDir

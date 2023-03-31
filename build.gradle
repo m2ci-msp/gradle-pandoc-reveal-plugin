@@ -18,19 +18,16 @@ dependencies {
     testRuntimeOnly group: 'org.jsoup', name: 'jsoup', version: '1.15.3'
 }
 
-pluginBundle {
+gradlePlugin {
     website = project.url
     vcsUrl = project.url
-    description = project.description
-    tags = ['slideshow', 'pandoc', 'reveal.js']
-}
-
-gradlePlugin {
     plugins {
         pandocRevealPlugin {
             id = 'org.m2ci.msp.pandocreveal'
             implementationClass = 'org.m2ci.msp.pandocreveal.PandocRevealPlugin'
             displayName = 'Gradle Pandoc reveal.js plugin'
+            description = project.description
+            tags.addAll 'slideshow', 'pandoc', 'reveal.js'
         }
     }
 }
@@ -49,28 +46,28 @@ test {
 
 publishing {
     publications {
-        withType(MavenPublication) {
+        withType(MavenPublication).configureEach {
             pom {
-                name = 'Pandoc Reveal.js Plugin'
-                description = project.description
-                url = project.url
-                inceptionYear = '2017'
+                name.set 'Pandoc Reveal.js Plugin'
+                description.set project.description
+                url.set project.url
+                inceptionYear.set '2017'
                 licenses {
                     license {
-                        name = 'Apache License 2.0'
-                        url = 'https://www.apache.org/licenses/LICENSE-2.0'
+                        name.set 'Apache License 2.0'
+                        url.set 'https://www.apache.org/licenses/LICENSE-2.0'
                     }
                 }
                 developers {
                     developer {
-                        name = 'Ingmar Steiner'
-                        url = 'https://github.com/psibre'
+                        name.set 'Ingmar Steiner'
+                        id.set 'psibre'
                     }
                 }
                 scm {
-                    connection = 'scm:git:https://github.com/m2ci-msp/gradle-pandoc-reveal-plugin.git'
-                    developerConnection = 'scm:git:git@github.com/m2ci-msp/gradle-pandoc-reveal-plugin.git'
-                    url = project.url
+                    connection.set "scm:git:${project.url}.git"
+                    developerConnection.set 'scm:git:git@github.com/m2ci-msp/gradle-pandoc-reveal-plugin.git'
+                    url.set project.url
                 }
             }
         }
