@@ -18,19 +18,16 @@ dependencies {
     testRuntimeOnly group: 'org.jsoup', name: 'jsoup', version: '1.15.3'
 }
 
-pluginBundle {
+gradlePlugin {
     website = project.url
     vcsUrl = project.url
-    description = project.description
-    tags = ['slideshow', 'pandoc', 'reveal.js']
-}
-
-gradlePlugin {
     plugins {
         pandocRevealPlugin {
             id = 'org.m2ci.msp.pandocreveal'
             implementationClass = 'org.m2ci.msp.pandocreveal.PandocRevealPlugin'
             displayName = 'Gradle Pandoc reveal.js plugin'
+            description = project.description
+            tags.addAll 'slideshow', 'pandoc', 'reveal.js'
         }
     }
 }
