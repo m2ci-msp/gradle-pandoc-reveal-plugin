@@ -1,12 +1,12 @@
 package org.m2ci.msp.pandocreveal
 
 import org.gradle.testkit.runner.GradleRunner
-import org.testng.annotations.DataProvider
-import org.testng.annotations.Test
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 
 import static org.gradle.testkit.runner.TaskOutcome.SUCCESS
 
-@Test
 class PandocRevealPluginTest {
 
     GradleRunner provideGradle() {
@@ -28,8 +28,7 @@ class PandocRevealPluginTest {
         assert result
     }
 
-    @DataProvider
-    Object[][] tasks() {
+    static Object[][] tasks() {
         [
                 ['testPandoc'],
                 ['testCompileReveal'],
@@ -38,7 +37,8 @@ class PandocRevealPluginTest {
         ]
     }
 
-    @Test(dataProvider = 'tasks')
+    @ParameterizedTest
+    @MethodSource('tasks')
     void testTasks(taskName) {
         def gradle = provideGradle()
         def result = gradle.withArguments('--warning-mode', 'all', '--stacktrace', taskName).build()
