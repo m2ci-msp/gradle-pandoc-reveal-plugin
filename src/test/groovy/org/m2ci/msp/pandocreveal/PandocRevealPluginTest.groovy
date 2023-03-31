@@ -3,7 +3,7 @@ package org.m2ci.msp.pandocreveal
 import org.gradle.testkit.runner.GradleRunner
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.MethodSource
+import org.junit.jupiter.params.provider.ValueSource
 
 import static org.gradle.testkit.runner.TaskOutcome.SUCCESS
 
@@ -28,18 +28,14 @@ class PandocRevealPluginTest {
         assert result
     }
 
-    static Object[][] tasks() {
-        [
-                ['testPandoc'],
-                ['testCompileReveal'],
-                ['assemble'],
-                ['testDate']
-        ]
-    }
-
     @ParameterizedTest
-    @MethodSource('tasks')
-    void testTasks(taskName) {
+    @ValueSource(strings = [
+            'testPandoc',
+            'testCompileReveal',
+            'assemble',
+            'testDate'
+    ])
+    void testTasks(String taskName) {
         def gradle = provideGradle()
         def result = gradle.withArguments('--warning-mode', 'all', '--stacktrace', taskName).build()
         assert result.task(":$taskName").outcome == SUCCESS
