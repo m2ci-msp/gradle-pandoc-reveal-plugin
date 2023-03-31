@@ -56,7 +56,7 @@ class PandocRevealPlugin implements Plugin<Project> {
         def pandocConfig = project.configurations.create('pandoc')
 
         project.tasks.register('pandoc', UnpackPandoc) {
-            config.set pandocConfig
+            config.set pandocConfig.name
             version.set '2.19.2'
         }
 
