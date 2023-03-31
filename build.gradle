@@ -14,7 +14,7 @@ repositories {
 
 dependencies {
     implementation group: 'org.yaml', name: 'snakeyaml', version: '2.0'
-    testImplementation group: 'org.testng', name: 'testng', version: '7.5'
+    testImplementation group: 'org.testng', name: 'testng', version: '7.7.0'
     testRuntimeOnly group: 'org.jsoup', name: 'jsoup', version: '1.15.3'
 }
 
