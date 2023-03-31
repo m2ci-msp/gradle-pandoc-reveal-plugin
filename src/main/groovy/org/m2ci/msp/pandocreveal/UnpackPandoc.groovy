@@ -21,6 +21,7 @@ class UnpackPandoc extends DefaultTask {
 
     @TaskAction
     void unpack() {
+        def arch
         project.copy {
             into temporaryDir
             from project.configurations.named(config.get())
@@ -31,6 +32,14 @@ class UnpackPandoc extends DefaultTask {
                 }
             }
             filesMatching('*.zip') { zipDetails ->
+                switch (zipDetails.file.name) {
+                    case { it.contains 'arm64-macOS' }:
+                        arch = 'arm64'
+                        break
+                    case { it.contains 'x86_64-macOS' }:
+                        arch = 'x86_64'
+                        break
+                }
                 project.copy {
                     into temporaryDir
                     from project.zipTree(zipDetails.file)
@@ -39,7 +48,10 @@ class UnpackPandoc extends DefaultTask {
         }
         project.copy {
             into project.layout.buildDirectory
-            from "$temporaryDir/pandoc-${version.get()}/bin"
+            def binParentDirName = "pandoc-${version.get()}"
+            if (arch)
+                binParentDirName += "-$arch"
+            from "$temporaryDir/$binParentDirName/bin"
             include 'pandoc'
         }
     }

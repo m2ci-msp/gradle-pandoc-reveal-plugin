@@ -69,7 +69,7 @@ class PandocRevealPlugin implements Plugin<Project> {
                 project.dependencies.add('pandoc', [group: 'org.pandoc', name: 'pandoc', version: project.pandoc.version.get(), classifier: 'linux-amd64', ext: 'tar.gz'])
                 break
             case { it.isMacOsX() }:
-                project.dependencies.add('pandoc', [group: 'org.pandoc', name: 'pandoc', version: project.pandoc.version.get(), classifier: 'macOS', ext: 'zip'])
+                project.dependencies.add('pandoc', [group: 'org.pandoc', name: 'pandoc', version: project.pandoc.version.get(), classifier: System.properties['os.arch'] == 'x86_64' ? 'x86_64-macOS' : 'arm64-macOS', ext: 'zip'])
                 break
         }
         project.dependencies.add REVEALJS, [group: 'se.hakimel.lab', name: 'reveal.js', version: project.revealJsVersion, ext: 'zip']
