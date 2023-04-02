@@ -13,8 +13,8 @@ repositories {
 }
 
 dependencies {
-    implementation group: 'org.yaml', name: 'snakeyaml', version: '1.33'
-    testImplementation group: 'org.testng', name: 'testng', version: '7.5'
+    implementation group: 'org.yaml', name: 'snakeyaml', version: '2.0'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter', version: '5.9.2'
     testRuntimeOnly group: 'org.jsoup', name: 'jsoup', version: '1.15.3'
 }
 
@@ -33,7 +33,7 @@ gradlePlugin {
 }
 
 test {
-    useTestNG()
+    useJUnitPlatform()
     systemProperty 'java.io.tmpdir', temporaryDir
     testLogging {
         events 'passed', 'failed', 'skipped'
