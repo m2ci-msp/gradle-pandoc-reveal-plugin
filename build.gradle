@@ -14,8 +14,7 @@ repositories {
 }
 
 dependencies {
-    implementation group: 'org.yaml', name: 'snakeyaml', version: '2.0'
-    testRuntimeOnly group: 'org.jsoup', name: 'jsoup', version: '1.15.3'
+    implementation libs.snakeyaml
 }
 
 gradlePlugin {
@@ -35,7 +34,10 @@ gradlePlugin {
 testing {
     suites {
         test {
-            useJUnitJupiter('5.9.2')
+            useJUnitJupiter(libs.versions.junit)
+            dependencies {
+                implementation libs.jsoup
+            }
             targets.configureEach {
                 testTask.configure {
                     systemProperty 'java.io.tmpdir', temporaryDir
