@@ -41,6 +41,7 @@ testing {
             targets.configureEach {
                 testTask.configure {
                     systemProperty 'java.io.tmpdir', temporaryDir
+                    systemProperty 'jsoupVersion', libs.versions.jsoup.get()
                     testLogging {
                         events 'passed', 'failed', 'skipped'
                         exceptionFormat = 'full'
