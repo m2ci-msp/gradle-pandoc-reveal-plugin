@@ -28,6 +28,13 @@ class PandocRevealPluginTest {
         assert result
     }
 
+    @Test
+    void testPluginWithLegacyGradle() {
+        def gradle = provideGradle().withGradleVersion('6.2')
+        def result = gradle.build()
+        assert result
+    }
+
     @ParameterizedTest
     @ValueSource(strings = [
             'testPandoc',
