@@ -57,12 +57,12 @@ class PandocRevealPlugin implements Plugin<Project> {
 
         project.tasks.register('pandoc', UnpackPandoc) {
             config.set pandocConfig.name
-            version.set '3.1.2'
+            version.set '3.1.12.1'
         }
 
         project.configurations.maybeCreate REVEALJS
 
-        project.ext.revealJsVersion = '4.4.0'
+        project.ext.revealJsVersion = '5.0.4'
 
         switch (OperatingSystem.current()) {
             case { it.isLinux() }:

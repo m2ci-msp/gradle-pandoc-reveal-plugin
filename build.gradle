@@ -1,6 +1,7 @@
 plugins {
-    id 'com.gradle.plugin-publish' version '1.1.0'
+    id 'com.gradle.plugin-publish' version '1.2.1'
     id 'groovy'
+    id 'jvm-test-suite'
 }
 
 group 'org.m2ci.msp'
@@ -13,9 +14,7 @@ repositories {
 }
 
 dependencies {
-    implementation group: 'org.yaml', name: 'snakeyaml', version: '2.0'
-    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter', version: '5.9.2'
-    testRuntimeOnly group: 'org.jsoup', name: 'jsoup', version: '1.15.3'
+    implementation libs.snakeyaml
 }
 
 gradlePlugin {
@@ -32,14 +31,20 @@ gradlePlugin {
     }
 }
 
-test {
-    useJUnitPlatform()
-    systemProperty 'java.io.tmpdir', temporaryDir
-    testLogging {
-        events 'passed', 'failed', 'skipped'
-        exceptionFormat = 'full'
-        info {
-            showStandardStreams = true
+testing {
+    suites {
+        test {
+            useJUnitJupiter(libs.versions.junit)
+            targets.configureEach {
+                testTask.configure {
+                    systemProperty 'java.io.tmpdir', temporaryDir
+                    systemProperty 'jsoupVersion', libs.versions.jsoup.get()
+                    testLogging {
+                        events 'passed', 'failed', 'skipped'
+                        exceptionFormat = 'full'
+                    }
+                }
+            }
         }
     }
 }

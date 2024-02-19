@@ -1,6 +1,6 @@
 buildscript {
     dependencies {
-        classpath group: 'org.jsoup', name: 'jsoup', version: '1.15.3'
+        classpath group: 'org.jsoup', name: 'jsoup', version: System.properties.jsoupVersion
     }
 }
 
@@ -8,8 +8,8 @@ plugins {
     id 'org.m2ci.msp.pandocreveal'
 }
 
-task testPandoc {
-    dependsOn pandoc
+tasks.register('testPandoc') {
+    dependsOn tasks.named('pandoc')
     doLast {
         def pandocBinary = pandoc.binary.get().asFile
         assert pandocBinary.exists()
@@ -23,9 +23,7 @@ task testPandoc {
     }
 }
 
-import java.text.SimpleDateFormat
-
-task makeAsset {
+tasks.register('makeAsset') {
     def destFile = file('anotherAsset.txt')
     outputs.files destFile
     doLast {
@@ -33,16 +31,16 @@ task makeAsset {
     }
 }
 
-compileReveal {
+tasks.named('compileReveal').configure {
     markdownFile = file('slides.md')
     headerFile = file('header.yaml')
     bibFile = file('refs.bib')
-    destDir = file("$buildDir/output")
+    destDir = layout.buildDirectory.dir('output')
     assetFiles = fileTree('.').include('assets/**') + files(makeAsset)
 }
 
-task testCompileReveal {
-    dependsOn compileReveal
+tasks.register('testCompileReveal') {
+    dependsOn tasks.named('compileReveal')
     doLast {
         def actualFile = file("$buildDir/output/index.html")
         assert actualFile.exists()
@@ -57,14 +55,14 @@ task testCompileReveal {
     }
 }
 
-task testDate {
-    dependsOn compileReveal
+tasks.register('testDate') {
+    dependsOn tasks.named('compileReveal')
     doLast {
         def htmlFile = file("$buildDir/output/index.html")
         def html = org.jsoup.Jsoup.parse(htmlFile, null)
         def actual = html.select('div.slides section').first().select('*.date').text()
         def dateLine = compileReveal.headerFile.get().asFile.readLines().find { it.startsWith 'date:' } as String
-        def date = new SimpleDateFormat('yyyy-MM-dd', Locale.US).parse(dateLine.tokenize(':').last().trim())
+        def date = new java.text.SimpleDateFormat('yyyy-MM-dd', Locale.US).parse(dateLine.tokenize(':').last().trim())
         def expected = date.format('EEE, MMM dd, yyyy')
         assert expected == actual
     }
