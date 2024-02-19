@@ -35,9 +35,6 @@ testing {
     suites {
         test {
             useJUnitJupiter(libs.versions.junit)
-            dependencies {
-                implementation libs.jsoup
-            }
             targets.configureEach {
                 testTask.configure {
                     systemProperty 'java.io.tmpdir', temporaryDir
