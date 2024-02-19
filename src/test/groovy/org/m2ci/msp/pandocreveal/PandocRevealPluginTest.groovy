@@ -1,7 +1,9 @@
 package org.m2ci.msp.pandocreveal
 
+import org.gradle.api.JavaVersion
 import org.gradle.testkit.runner.GradleRunner
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.condition.EnabledIf
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
 
@@ -24,6 +26,18 @@ class PandocRevealPluginTest {
     @Test
     void testPlugin() {
         def gradle = provideGradle()
+        def result = gradle.build()
+        assert result
+    }
+
+    static boolean currentJavaVersionIs13OrLower() {
+        return JavaVersion.current() <= JavaVersion.VERSION_13
+    }
+
+    @Test
+    @EnabledIf('currentJavaVersionIs13OrLower')
+    void testPluginWithLegacyGradle() {
+        def gradle = provideGradle().withGradleVersion('6.2')
         def result = gradle.build()
         assert result
     }
