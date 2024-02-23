@@ -4,6 +4,7 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.ListProperty
 import org.gradle.api.tasks.*
 import org.yaml.snakeyaml.DumperOptions
 import org.yaml.snakeyaml.Yaml
@@ -35,6 +36,10 @@ class PandocRevealCompile extends DefaultTask {
     @Optional
     @InputFile
     final RegularFileProperty cslFile = project.objects.fileProperty()
+
+    @Optional
+    @Input
+    final ListProperty pandocFilters = project.objects.listProperty(String)
 
     @OutputDirectory
     final DirectoryProperty destDir = project.objects.directoryProperty()
@@ -85,6 +90,13 @@ class PandocRevealCompile extends DefaultTask {
             command += [
                     '--csl', cslFile.get().asFile
             ]
+        }
+        if (pandocFilters.get()) {
+            pandocFilters.get().each { filter ->
+                command += [
+                        '--filter', filter
+                ]
+            }
         }
         project.exec {
             commandLine command
