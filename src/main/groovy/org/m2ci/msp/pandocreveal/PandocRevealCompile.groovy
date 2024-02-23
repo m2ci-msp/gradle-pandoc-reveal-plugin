@@ -5,6 +5,7 @@ import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
+import org.gradle.api.provider.MapProperty
 import org.gradle.api.tasks.*
 import org.yaml.snakeyaml.DumperOptions
 import org.yaml.snakeyaml.Yaml
@@ -40,6 +41,10 @@ class PandocRevealCompile extends DefaultTask {
     @Optional
     @Input
     final ListProperty pandocFilters = project.objects.listProperty(String)
+
+    @Optional
+    @Input
+    final MapProperty pandocEnvironment = project.objects.mapProperty(String, String)
 
     @OutputDirectory
     final DirectoryProperty destDir = project.objects.directoryProperty()
@@ -100,6 +105,7 @@ class PandocRevealCompile extends DefaultTask {
         }
         project.exec {
             commandLine command
+            environment.putAll pandocEnvironment.get()
         }
     }
 }
