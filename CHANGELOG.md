@@ -4,6 +4,11 @@ Gradle Pandoc reveal.js plugin
 [Unreleased]
 ------------
 
+### Added
+
+- Support for Pandoc filters
+- Support for environment variables in Pandoc exec
+
 ### Changed
 
 - [all changes since v0.5.1]
