@@ -38,9 +38,12 @@ compileReveal {
 }
 ```
 
+Note that Pandoc filters such as [mermaid-filter] must be installed separately.
+
 The generated slideshow will be created in `compileReveal.destDir` (default: `layout.buildDirectory.dir('slides')`)
 
 [Gradle]: https://gradle.org
 [Pandoc]: https://pandoc.org/
 [reveal.js]: https://revealjs.com/
 [Java]: https://www.java.com/
+[mermaid-filter]: https://github.com/raghur/mermaid-filter
