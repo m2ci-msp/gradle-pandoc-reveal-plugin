@@ -54,4 +54,16 @@ class PandocRevealPluginTest {
         def result = gradle.withArguments('--warning-mode', 'all', '--stacktrace', taskName).build()
         assert result.task(":$taskName").outcome == SUCCESS
     }
+
+    @ParameterizedTest
+    @ValueSource(booleans = [true, false])
+    void testMermaid(boolean withMermaid) {
+        def gradle = provideGradle()
+        def taskName = 'testMermaid'
+        def result = gradle.withArguments('--warning-mode', 'all',
+                '--stacktrace',
+                '--project-prop', "mermaidEnabled=$withMermaid",
+                taskName).build()
+        assert result.task(":$taskName").outcome == SUCCESS
+    }
 }

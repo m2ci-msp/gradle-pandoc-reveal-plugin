@@ -67,3 +67,32 @@ tasks.register('testDate') {
         assert expected == actual
     }
 }
+
+if (Boolean.parseBoolean(findProperty('mermaidEnabled'))) {
+    tasks.named('compileReveal').configure {
+        pandocFilters = ['mermaid-filter']
+        pandocEnvironment = ['MERMAID_FILTER_FORMAT': 'svg']
+    }
+
+    tasks.register('testMermaid') {
+        dependsOn tasks.named('compileReveal')
+        doLast {
+            def htmlFile = layout.buildDirectory.file('output/index.html').get().asFile
+            def html = org.jsoup.Jsoup.parse(htmlFile, null)
+            def mermaidSection = html.select('#qux').first()
+            def mermaidContent = mermaidSection.select('p img[data-src]')
+            assert mermaidContent
+        }
+    }
+} else {
+    tasks.register('testMermaid') {
+        dependsOn tasks.named('compileReveal')
+        doLast {
+            def htmlFile = layout.buildDirectory.file('output/index.html').get().asFile
+            def html = org.jsoup.Jsoup.parse(htmlFile, null)
+            def mermaidSection = html.select('#qux').first()
+            def mermaidContent = mermaidSection.select('pre.mermaid code').text()
+            assert mermaidContent.contains('graph LR')
+        }
+    }
+}
