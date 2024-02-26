@@ -62,7 +62,7 @@ class PandocRevealPlugin implements Plugin<Project> {
 
         project.configurations.maybeCreate REVEALJS
 
-        project.ext.revealJsVersion = '5.0.4'
+        project.ext.revealJsVersion = '5.0.5'
 
         switch (OperatingSystem.current()) {
             case { it.isLinux() }:
