@@ -31,6 +31,10 @@ compileReveal {
   // optionally, additional assets:
   assetFiles = files('some/asset.txt', tasks.findByName('assetProducingTask')) +
     fileTree('src').include('assets/**')
+
+  // optionally, filters and/or environment variables for Pandoc exec, e.g.,:
+  pandocFilters = ['mermaid-filter']
+  pandocEnvironment = ['MERMAID_FILTER_FORMAT': 'svg']
 }
 ```
 
