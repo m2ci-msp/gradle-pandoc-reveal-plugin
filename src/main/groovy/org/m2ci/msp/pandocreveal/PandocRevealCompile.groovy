@@ -47,11 +47,9 @@ class PandocRevealCompile extends DefaultTask {
     @InputFile
     final RegularFileProperty cslFile = project.objects.fileProperty()
 
-    @Optional
     @Input
     final ListProperty pandocFilters = project.objects.listProperty(String)
 
-    @Optional
     @Input
     final MapProperty pandocEnvironment = project.objects.mapProperty(String, String)
 
@@ -111,12 +109,10 @@ class PandocRevealCompile extends DefaultTask {
                     '--csl', cslFile.get().asFile
             ]
         }
-        if (pandocFilters.get()) {
-            pandocFilters.get().each { filter ->
-                command += [
-                        '--filter', filter
-                ]
-            }
+        pandocFilters.get().each { filter ->
+            command += [
+                    '--filter', filter
+            ]
         }
         project.exec {
             commandLine command
