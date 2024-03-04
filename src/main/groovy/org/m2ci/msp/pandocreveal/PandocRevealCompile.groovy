@@ -6,6 +6,7 @@ import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.MapProperty
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.*
 import org.yaml.snakeyaml.DumperOptions
 import org.yaml.snakeyaml.Yaml
@@ -29,6 +30,14 @@ class PandocRevealCompile extends DefaultTask {
     @Optional
     @InputFiles
     FileCollection assetFiles = project.files()
+
+    @Input
+    final Property<Boolean> tableOfContents = project.objects.property(Boolean)
+            .convention(false)
+
+    @Input
+    final Property<Integer> tableOfContentsDepth = project.objects.property(Integer)
+            .convention(2)
 
     @Optional
     @InputFile
@@ -85,6 +94,12 @@ class PandocRevealCompile extends DefaultTask {
                 '--output', destDir.file('index.html').get().asFile,
                 srcFile
         ]
+        if (tableOfContents.get()) {
+            command += [
+                    '--toc',
+                    '--toc-depth', tableOfContentsDepth.get()
+            ]
+        }
         if (bibFile.getOrNull()) {
             command += [
                     '--citeproc',
