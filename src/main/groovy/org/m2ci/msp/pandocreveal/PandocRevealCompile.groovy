@@ -6,6 +6,7 @@ import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.MapProperty
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.*
 import org.yaml.snakeyaml.DumperOptions
 import org.yaml.snakeyaml.Yaml
@@ -30,6 +31,14 @@ class PandocRevealCompile extends DefaultTask {
     @InputFiles
     FileCollection assetFiles = project.files()
 
+    @Input
+    final Property<Boolean> tableOfContents = project.objects.property(Boolean)
+            .convention(false)
+
+    @Input
+    final Property<Integer> tableOfContentsDepth = project.objects.property(Integer)
+            .convention(1)
+
     @Optional
     @InputFile
     final RegularFileProperty bibFile = project.objects.fileProperty()
@@ -38,11 +47,9 @@ class PandocRevealCompile extends DefaultTask {
     @InputFile
     final RegularFileProperty cslFile = project.objects.fileProperty()
 
-    @Optional
     @Input
     final ListProperty pandocFilters = project.objects.listProperty(String)
 
-    @Optional
     @Input
     final MapProperty pandocEnvironment = project.objects.mapProperty(String, String)
 
@@ -85,6 +92,12 @@ class PandocRevealCompile extends DefaultTask {
                 '--output', destDir.file('index.html').get().asFile,
                 srcFile
         ]
+        if (tableOfContents.get()) {
+            command += [
+                    '--toc',
+                    '--toc-depth', tableOfContentsDepth.get()
+            ]
+        }
         if (bibFile.getOrNull()) {
             command += [
                     '--citeproc',
@@ -96,12 +109,10 @@ class PandocRevealCompile extends DefaultTask {
                     '--csl', cslFile.get().asFile
             ]
         }
-        if (pandocFilters.get()) {
-            pandocFilters.get().each { filter ->
-                command += [
-                        '--filter', filter
-                ]
-            }
+        pandocFilters.get().each { filter ->
+            command += [
+                    '--filter', filter
+            ]
         }
         project.exec {
             commandLine command

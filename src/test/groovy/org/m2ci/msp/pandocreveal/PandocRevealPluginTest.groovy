@@ -57,6 +57,18 @@ class PandocRevealPluginTest {
 
     @ParameterizedTest
     @ValueSource(booleans = [true, false])
+    void testToc(boolean withToc) {
+        def gradle = provideGradle()
+        def taskName = 'testToc'
+        def result = gradle.withArguments('--warning-mode', 'all',
+                '--stacktrace',
+                '--project-prop', "tocEnabled=$withToc",
+                taskName).build()
+        assert result.task(":$taskName").outcome == SUCCESS
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = [true, false])
     void testMermaid(boolean withMermaid) {
         def gradle = provideGradle()
         def taskName = 'testMermaid'

@@ -4,6 +4,10 @@ Gradle Pandoc reveal.js plugin
 [Unreleased]
 ------------
 
+### Added
+
+- Support for Table of Contents via Pandoc
+
 ### Changed
 
 - [all changes since v0.5.2]

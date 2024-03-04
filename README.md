@@ -32,6 +32,11 @@ compileReveal {
   assetFiles = files('some/asset.txt', tasks.findByName('assetProducingTask')) +
     fileTree('src').include('assets/**')
 
+  // optionally, enable ToC and maybe set depth (default: 1)
+  tableOfContents = true
+  tableOfContentsDepth = 2
+  // note that the ToC title heading will be empty; set `toc-title` to the desired heading in the YAML header file...
+
   // optionally, filters and/or environment variables for Pandoc exec, e.g.,:
   pandocFilters = ['mermaid-filter']
   pandocEnvironment = ['MERMAID_FILTER_FORMAT': 'svg']
