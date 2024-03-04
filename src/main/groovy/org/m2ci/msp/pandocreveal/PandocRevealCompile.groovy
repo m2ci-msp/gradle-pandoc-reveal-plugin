@@ -37,7 +37,7 @@ class PandocRevealCompile extends DefaultTask {
 
     @Input
     final Property<Integer> tableOfContentsDepth = project.objects.property(Integer)
-            .convention(2)
+            .convention(1)
 
     @Optional
     @InputFile
