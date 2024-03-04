@@ -68,6 +68,45 @@ tasks.register('testDate') {
     }
 }
 
+if (Boolean.parseBoolean(findProperty('tocEnabled'))) {
+    def tocTitle = 'Overview'
+
+    tasks.named('compileReveal').configure {
+        tableOfContents = true
+        tableOfContentsDepth = 3
+        doFirst {
+            File headerFile = headerFile.get().asFile
+            headerFile.withWriterAppend {
+                it.writeLine "toc-title: $tocTitle"
+            }
+        }
+    }
+
+    tasks.register('testToc') {
+        dependsOn tasks.named('compileReveal')
+        doLast {
+            def htmlFile = layout.buildDirectory.file('output/index.html').get().asFile
+            def html = org.jsoup.Jsoup.parse(htmlFile, null)
+            def tocSection = html.select('section#TOC').first()
+            assert tocSection
+            def tocSectionTitle = tocSection.select('h2#toc-title').first().text()
+            assert tocSectionTitle == tocTitle
+            def tocSectionText = tocSection.text()
+            assert tocSectionText == "$tocTitle Foo Bar Qux Quux"
+        }
+    }
+} else {
+    tasks.register('testToc') {
+        dependsOn tasks.named('compileReveal')
+        doLast {
+            def htmlFile = layout.buildDirectory.file('output/index.html').get().asFile
+            def html = org.jsoup.Jsoup.parse(htmlFile, null)
+            def tocSection = html.select('section#TOC')
+            assert tocSection == []
+        }
+    }
+}
+
 if (Boolean.parseBoolean(findProperty('mermaidEnabled'))) {
     tasks.named('compileReveal').configure {
         pandocFilters = ['mermaid-filter']
