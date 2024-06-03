@@ -36,6 +36,14 @@ class PandocRevealPluginTest {
 
     @Test
     @EnabledIf('currentJavaVersionIs13OrLower')
+    void testPluginWithUnsupportedLegacyGradle() {
+        def gradle = provideGradle().withGradleVersion('6.1.1')
+        def result = gradle.buildAndFail()
+        assert result
+    }
+
+    @Test
+    @EnabledIf('currentJavaVersionIs13OrLower')
     void testPluginWithLegacyGradle() {
         def gradle = provideGradle().withGradleVersion('6.2')
         def result = gradle.build()
