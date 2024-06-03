@@ -6,7 +6,8 @@ Gradle Pandoc reveal.js plugin
 
 ### Changed
 
-- Upgraded Pandoc to v3.1.13
+- Build with Gradle v8.8
+- Upgraded Pandoc to v3.2
 - Upgraded reveal.js to v5.1.0
 - [all changes since v0.5.3]
 
