@@ -57,7 +57,7 @@ class PandocRevealPlugin implements Plugin<Project> {
 
         project.tasks.register('pandoc', UnpackPandoc) {
             config.set pandocConfig.name
-            version.set '3.2'
+            version.set '3.3'
         }
 
         project.configurations.maybeCreate REVEALJS
