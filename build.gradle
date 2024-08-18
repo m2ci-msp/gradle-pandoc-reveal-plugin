@@ -17,6 +17,12 @@ dependencies {
     implementation libs.snakeyaml
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(8)
+    }
+}
+
 gradlePlugin {
     website = project.url
     vcsUrl = project.url
