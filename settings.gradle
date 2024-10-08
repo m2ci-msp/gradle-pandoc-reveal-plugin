@@ -9,7 +9,7 @@ dependencyResolutionManagement {
         libs {
             version('jsoup', '1.18.1')
             version('junit', '5.11.2')
-            version('snakeyaml', '2.2')
+            version('snakeyaml', '2.3')
             library('snakeyaml', 'org.yaml', 'snakeyaml')
                     .versionRef('snakeyaml')
         }
