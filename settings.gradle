@@ -8,7 +8,7 @@ dependencyResolutionManagement {
     versionCatalogs {
         libs {
             version('jsoup', '1.18.1')
-            version('junit', '5.11.0')
+            version('junit', '5.11.2')
             version('snakeyaml', '2.2')
             library('snakeyaml', 'org.yaml', 'snakeyaml')
                     .versionRef('snakeyaml')
