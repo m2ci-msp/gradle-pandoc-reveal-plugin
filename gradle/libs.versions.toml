@@ -1,0 +1,7 @@
+[versions]
+jsoup = "1.18.2"
+junit = "5.11.4"
+snakeyaml = "2.3"
+
+[libraries]
+snakeyaml = { module = "org.yaml:snakeyaml", version.ref = "snakeyaml" }

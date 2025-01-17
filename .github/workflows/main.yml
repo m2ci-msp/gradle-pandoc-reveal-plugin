@@ -21,7 +21,7 @@ jobs:
           - os: ubuntu-22.04
             java_version: 21
           - os: macos-13
-            java_version: 11
+            java_version: 17
       fail-fast: false
     runs-on: ${{ matrix.os }}
 
