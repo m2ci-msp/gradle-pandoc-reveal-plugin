@@ -19,8 +19,8 @@ class PandocRevealPlugin implements Plugin<Project> {
             exclusiveContent {
                 forRepository {
                     ivy {
-                        name 'GitHubJgm'
-                        url 'https://github.com/jgm'
+                        name = 'GitHubJgm'
+                        url = 'https://github.com/jgm'
                         patternLayout {
                             artifact '[module]/releases/download/[revision]/[module]-[revision]-[classifier].[ext]'
                         }
@@ -37,8 +37,8 @@ class PandocRevealPlugin implements Plugin<Project> {
             exclusiveContent {
                 forRepository {
                     ivy {
-                        name 'GitHubHakimel'
-                        url 'https://github.com/hakimel'
+                        name = 'GitHubHakimel'
+                        url = 'https://github.com/hakimel'
                         patternLayout {
                             artifact '[module]/archive/[revision].[ext]'
                         }
