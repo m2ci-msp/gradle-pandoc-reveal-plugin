@@ -1,6 +1,6 @@
 [versions]
-jsoup = "1.19.1"
-junit = "5.12.1"
+jsoup = "1.20.1"
+junit = "5.13.0"
 snakeyaml = "2.4"
 
 [libraries]
