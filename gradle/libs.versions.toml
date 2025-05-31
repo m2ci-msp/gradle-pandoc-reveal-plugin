@@ -1,5 +1,5 @@
 [versions]
-jsoup = "1.19.1"
+jsoup = "1.20.1"
 junit = "5.12.1"
 snakeyaml = "2.4"
 
