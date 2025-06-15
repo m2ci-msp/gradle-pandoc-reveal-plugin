@@ -33,6 +33,6 @@ jobs:
 
       - run: npm install --global mermaid-filter@1.4.7
 
-      - uses: gradle/actions/setup-gradle@v4.4.0
+      - uses: gradle/actions/setup-gradle@v4.4.1
 
       - run: ./gradlew build --warning-mode all
