@@ -3,6 +3,7 @@ package org.m2ci.msp.pandocreveal
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.BasePlugin
+import org.gradle.api.tasks.Copy
 import org.gradle.api.tasks.bundling.Zip
 import org.gradle.internal.os.OperatingSystem
 
@@ -55,9 +56,31 @@ class PandocRevealPlugin implements Plugin<Project> {
 
         def pandocConfig = project.configurations.create('pandoc')
 
-        project.tasks.register('pandoc', UnpackPandoc) {
-            config.set pandocConfig.name
-            version.set '3.7.0.2'
+        def pandocTask = project.tasks.register('pandoc', Copy) {
+            def pandocDir = project.layout.buildDirectory.dir('pandoc')
+
+            ext.version = project.objects.property(String)
+                    .convention('3.7.0.2')
+            ext.binary = project.objects.fileProperty()
+                    .convention(pandocDir.get().file('bin/pandoc'))
+
+            into pandocDir
+            from pandocConfig
+            filesMatching '*.tar.gz', { tarDetails ->
+                project.copy {
+                    into pandocDir
+                    from project.tarTree(tarDetails.file)
+                }
+            }
+            filesMatching '*.zip', { zipDetails ->
+                project.copy {
+                    into pandocDir
+                    from project.zipTree(zipDetails.file)
+                    filesMatching '*/bin/pandoc', { pandocBinary ->
+                        pandocBinary.path = 'bin/pandoc'
+                    }
+                }
+            }
         }
 
         project.configurations.maybeCreate REVEALJS
@@ -75,6 +98,7 @@ class PandocRevealPlugin implements Plugin<Project> {
         project.dependencies.add REVEALJS, [group: 'se.hakimel.lab', name: 'reveal.js', version: project.revealJsVersion, ext: 'zip']
 
         project.tasks.register 'compileReveal', PandocRevealCompile, {
+            dependsOn pandocTask
             revealJsFiles = project.files(project.configurations.getByName(REVEALJS))
             destDir = project.layout.buildDirectory.dir('slides')
         }
