@@ -8,8 +8,13 @@ import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.*
+import org.gradle.process.ExecOperations
+
+import javax.inject.Inject
 
 class PandocRevealCompile extends DefaultTask {
+
+    private ExecOperations execOperations
 
     @InputFile
     final RegularFileProperty pandocBinary = project.objects.fileProperty()
@@ -49,6 +54,11 @@ class PandocRevealCompile extends DefaultTask {
 
     @OutputDirectory
     final DirectoryProperty destDir = project.objects.directoryProperty()
+
+    @Inject
+    PandocRevealCompile(ExecOperations execOperations) {
+        this.execOperations = execOperations
+    }
 
     @TaskAction
     void compile() {
@@ -92,7 +102,7 @@ class PandocRevealCompile extends DefaultTask {
                     '--filter', filter
             ]
         }
-        project.exec {
+        execOperations.exec {
             commandLine command
             environment.putAll pandocEnvironment.get()
         }
