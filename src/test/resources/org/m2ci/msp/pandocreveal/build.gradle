@@ -19,7 +19,7 @@ tasks.register('testPandoc') {
             commandLine pandocBinary, '--version'
             standardOutput = output
         }
-        assert output.toString().readLines().first().split().last() == pandoc.version.get()
+        assert output.toString().readLines().first().split().last() == pandocReveal.pandocVersion.get()
     }
 }
 

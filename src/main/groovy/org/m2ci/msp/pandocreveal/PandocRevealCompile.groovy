@@ -76,7 +76,7 @@ class PandocRevealCompile extends DefaultTask {
                 pandocBinary.get(),
                 '--standalone',
                 '--to', 'revealjs',
-                '--variable', "revealjs-url=reveal.js-$project.revealJsVersion",
+                '--variable', "revealjs-url=reveal.js-${project.pandocReveal.revealVersion.get()}",
                 '--output', destDir.file('index.html').get().asFile,
                 markdownFile.get().asFile
         ]

@@ -54,13 +54,13 @@ class PandocRevealPlugin implements Plugin<Project> {
             }
         }
 
+        def pandocReveal = project.extensions.create('pandocReveal', PandocRevealExtension)
+
         def pandocConfig = project.configurations.create('pandoc')
 
         def pandocTask = project.tasks.register('pandoc', Copy) {
             def pandocDir = project.layout.buildDirectory.dir('pandoc')
 
-            ext.version = project.objects.property(String)
-                    .convention('3.7.0.2')
             ext.binary = project.objects.fileProperty()
                     .convention(pandocDir.get().file('bin/pandoc'))
 
@@ -85,17 +85,15 @@ class PandocRevealPlugin implements Plugin<Project> {
 
         project.configurations.maybeCreate REVEALJS
 
-        project.ext.revealJsVersion = '5.2.1'
-
         switch (OperatingSystem.current()) {
             case { it.isLinux() }:
-                project.dependencies.add('pandoc', [group: 'org.pandoc', name: 'pandoc', version: project.pandoc.version.get(), classifier: 'linux-amd64', ext: 'tar.gz'])
+                project.dependencies.add('pandoc', [group: 'org.pandoc', name: 'pandoc', version: pandocReveal.pandocVersion.get(), classifier: 'linux-amd64', ext: 'tar.gz'])
                 break
             case { it.isMacOsX() }:
-                project.dependencies.add('pandoc', [group: 'org.pandoc', name: 'pandoc', version: project.pandoc.version.get(), classifier: System.properties['os.arch'] == 'x86_64' ? 'x86_64-macOS' : 'arm64-macOS', ext: 'zip'])
+                project.dependencies.add('pandoc', [group: 'org.pandoc', name: 'pandoc', version: pandocReveal.pandocVersion.get(), classifier: System.properties['os.arch'] == 'x86_64' ? 'x86_64-macOS' : 'arm64-macOS', ext: 'zip'])
                 break
         }
-        project.dependencies.add REVEALJS, [group: 'se.hakimel.lab', name: 'reveal.js', version: project.revealJsVersion, ext: 'zip']
+        project.dependencies.add REVEALJS, [group: 'se.hakimel.lab', name: 'reveal.js', version: pandocReveal.revealVersion.get(), ext: 'zip']
 
         def prepareMarkdownSourceTask = project.tasks.register('prepareMarkdownSource', PrepareMarkdownSource)
 
