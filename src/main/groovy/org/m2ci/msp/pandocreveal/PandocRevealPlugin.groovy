@@ -95,17 +95,28 @@ class PandocRevealPlugin implements Plugin<Project> {
         }
         project.dependencies.add REVEALJS, [group: 'se.hakimel.lab', name: 'reveal.js', version: pandocReveal.revealVersion.get(), ext: 'zip']
 
-        def prepareMarkdownSourceTask = project.tasks.register('prepareMarkdownSource', PrepareMarkdownSource)
+        def prepareMarkdownSourceTask = project.tasks.register('prepareMarkdownSource', PrepareMarkdownSource) {
+            markdownFile = pandocReveal.markdownFile
+            headerFile = pandocReveal.headerFile
+        }
 
         project.tasks.register 'compileReveal', PandocRevealCompile, {
             dependsOn pandocTask
+            pandocBinary = pandocTask.get().binary
             markdownFile = prepareMarkdownSourceTask.get().destFile
             revealJsFiles = project.files(project.configurations.getByName(REVEALJS))
-            destDir = project.layout.buildDirectory.dir('slides')
+            assetFiles = pandocReveal.assetFiles
+            tableOfContents = pandocReveal.tableOfContents
+            tableOfContentsDepth = pandocReveal.tableOfContentsDepth
+            bibFile = pandocReveal.bibFile
+            cslFile = pandocReveal.cslFile
+            pandocFilters = pandocReveal.pandocFilters
+            pandocEnvironment = pandocReveal.pandocEnvironment
+            destDir = pandocReveal.destDir
         }
 
         project.tasks.register 'packageReveal', Zip, {
-            from project.tasks.named('compileReveal').get().destDir
+            from pandocReveal.destDir
         }
 
         project.artifacts {

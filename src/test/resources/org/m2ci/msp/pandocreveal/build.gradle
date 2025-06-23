@@ -8,6 +8,22 @@ plugins {
     id 'org.m2ci.msp.pandocreveal'
 }
 
+tasks.register('makeAsset') {
+    def destFile = file('anotherAsset.txt')
+    outputs.files destFile
+    doLast {
+        destFile.text = 'foo'
+    }
+}
+
+pandocReveal {
+    markdownFile = file('slides.md')
+    headerFile = file('header.yaml')
+    assetFiles = fileTree('.').include('assets/**') + files(makeAsset)
+    bibFile = file('refs.bib')
+    destDir = layout.buildDirectory.dir('output')
+}
+
 tasks.register('testPandoc') {
     dependsOn tasks.named('pandoc')
     doLast {
@@ -21,25 +37,6 @@ tasks.register('testPandoc') {
         }
         assert output.toString().readLines().first().split().last() == pandocReveal.pandocVersion.get()
     }
-}
-
-tasks.register('makeAsset') {
-    def destFile = file('anotherAsset.txt')
-    outputs.files destFile
-    doLast {
-        destFile.text = 'foo'
-    }
-}
-
-tasks.named('prepareMarkdownSource').configure {
-    markdownFile = file('slides.md')
-    headerFile = file('header.yaml')
-}
-
-tasks.named('compileReveal').configure {
-    bibFile = file('refs.bib')
-    destDir = layout.buildDirectory.dir('output')
-    assetFiles = fileTree('.').include('assets/**') + files(makeAsset)
 }
 
 tasks.register('testCompileReveal') {
@@ -83,7 +80,7 @@ if (Boolean.parseBoolean(findProperty('tocEnabled'))) {
         }
     }
 
-    tasks.named('compileReveal').configure {
+    pandocReveal {
         tableOfContents = true
         tableOfContentsDepth = 3
     }
@@ -114,7 +111,7 @@ if (Boolean.parseBoolean(findProperty('tocEnabled'))) {
 }
 
 if (Boolean.parseBoolean(findProperty('mermaidEnabled'))) {
-    tasks.named('compileReveal').configure {
+    pandocReveal {
         pandocFilters = ['mermaid-filter']
         pandocEnvironment = ['MERMAID_FILTER_FORMAT': 'svg']
     }

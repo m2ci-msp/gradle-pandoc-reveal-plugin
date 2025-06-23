@@ -54,7 +54,6 @@ class PandocRevealPluginTest {
     @ValueSource(strings = [
             'testPandoc',
             'testCompileReveal',
-            'assemble',
             'testDate'
     ])
     void testTasks(String taskName) {

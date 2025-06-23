@@ -18,25 +18,22 @@ class PandocRevealCompile extends DefaultTask {
 
     @InputFile
     final RegularFileProperty pandocBinary = project.objects.fileProperty()
-            .convention(project.pandoc.binary)
 
     @InputFile
     final RegularFileProperty markdownFile = project.objects.fileProperty()
 
     @InputFiles
-    FileCollection revealJsFiles = project.files()
+    FileCollection revealJsFiles = project.objects.fileCollection()
 
     @Optional
     @InputFiles
-    FileCollection assetFiles = project.files()
+    FileCollection assetFiles = project.objects.fileCollection()
 
     @Input
     final Property<Boolean> tableOfContents = project.objects.property(Boolean)
-            .convention(false)
 
     @Input
     final Property<Integer> tableOfContentsDepth = project.objects.property(Integer)
-            .convention(1)
 
     @Optional
     @InputFile
