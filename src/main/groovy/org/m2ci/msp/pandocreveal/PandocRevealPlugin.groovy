@@ -12,8 +12,6 @@ class PandocRevealPlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
 
-        final String REVEALJS = 'revealJS'
-
         project.pluginManager.apply BasePlugin
 
         project.repositories {
@@ -57,6 +55,26 @@ class PandocRevealPlugin implements Plugin<Project> {
         def pandocReveal = project.extensions.create('pandocReveal', PandocRevealExtension)
 
         def pandocConfig = project.configurations.create('pandoc')
+        def pandocDependency = [
+                group  : 'org.pandoc',
+                name   : 'pandoc',
+                version: pandocReveal.pandocVersion.get()
+        ]
+        switch (OperatingSystem.current()) {
+            case { it.isLinux() }:
+                pandocDependency << [
+                        classifier: 'linux-amd64',
+                        ext       : 'tar.gz'
+                ]
+                break
+            case { it.isMacOsX() }:
+                pandocDependency << [
+                        classifier: System.properties['os.arch'] == 'x86_64' ? 'x86_64-macOS' : 'arm64-macOS',
+                        ext       : 'zip'
+                ]
+                break
+        }
+        project.dependencies.add(pandocConfig.name, pandocDependency)
 
         def pandocTask = project.tasks.register('pandoc', Copy) {
             def pandocDir = project.layout.buildDirectory.dir('pandoc')
@@ -83,17 +101,14 @@ class PandocRevealPlugin implements Plugin<Project> {
             }
         }
 
-        project.configurations.maybeCreate REVEALJS
-
-        switch (OperatingSystem.current()) {
-            case { it.isLinux() }:
-                project.dependencies.add('pandoc', [group: 'org.pandoc', name: 'pandoc', version: pandocReveal.pandocVersion.get(), classifier: 'linux-amd64', ext: 'tar.gz'])
-                break
-            case { it.isMacOsX() }:
-                project.dependencies.add('pandoc', [group: 'org.pandoc', name: 'pandoc', version: pandocReveal.pandocVersion.get(), classifier: System.properties['os.arch'] == 'x86_64' ? 'x86_64-macOS' : 'arm64-macOS', ext: 'zip'])
-                break
-        }
-        project.dependencies.add REVEALJS, [group: 'se.hakimel.lab', name: 'reveal.js', version: pandocReveal.revealVersion.get(), ext: 'zip']
+        def revealConfig = project.configurations.create('reveal')
+        def revealDependency = [
+                group  : 'se.hakimel.lab',
+                name   : 'reveal.js',
+                version: pandocReveal.revealVersion.get(),
+                ext    : 'zip'
+        ]
+        project.dependencies.add(revealConfig.name, revealDependency)
 
         def prepareMarkdownSourceTask = project.tasks.register('prepareMarkdownSource', PrepareMarkdownSource) {
             markdownFile = pandocReveal.markdownFile
@@ -104,7 +119,7 @@ class PandocRevealPlugin implements Plugin<Project> {
             dependsOn pandocTask
             pandocBinary = pandocTask.get().binary
             markdownFile = prepareMarkdownSourceTask.get().destFile
-            revealJsFiles = project.files(project.configurations.getByName(REVEALJS))
+            revealJsFiles = project.files(revealConfig)
             assetFiles = pandocReveal.assetFiles
             tableOfContents = pandocReveal.tableOfContents
             tableOfContentsDepth = pandocReveal.tableOfContentsDepth
