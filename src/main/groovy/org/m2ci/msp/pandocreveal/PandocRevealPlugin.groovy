@@ -115,12 +115,25 @@ class PandocRevealPlugin implements Plugin<Project> {
             headerFile = pandocReveal.headerFile
         }
 
+        def copyRevealResourcesTask = project.tasks.register('copyRevealResources', Copy) {
+            into pandocReveal.destDir
+            from revealConfig, {
+                filesMatching '*.zip', { zipDetails ->
+                    project.copy {
+                        into pandocReveal.destDir
+                        from project.zipTree(zipDetails.file)
+                    }
+                    zipDetails.exclude()
+                }
+            }
+            from pandocReveal.assetFiles
+        }
+
         project.tasks.register 'compileReveal', PandocRevealCompile, {
-            dependsOn pandocTask
+            dependsOn pandocTask,
+                    copyRevealResourcesTask
             pandocBinary = pandocTask.get().binary
             markdownFile = prepareMarkdownSourceTask.get().destFile
-            revealJsFiles = project.files(revealConfig)
-            assetFiles = pandocReveal.assetFiles
             tableOfContents = pandocReveal.tableOfContents
             tableOfContentsDepth = pandocReveal.tableOfContentsDepth
             bibFile = pandocReveal.bibFile

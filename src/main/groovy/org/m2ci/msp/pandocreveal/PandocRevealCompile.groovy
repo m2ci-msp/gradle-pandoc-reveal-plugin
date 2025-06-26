@@ -22,13 +22,6 @@ class PandocRevealCompile extends DefaultTask {
     @InputFile
     final RegularFileProperty markdownFile = project.objects.fileProperty()
 
-    @InputFiles
-    FileCollection revealJsFiles = project.objects.fileCollection()
-
-    @Optional
-    @InputFiles
-    FileCollection assetFiles = project.objects.fileCollection()
-
     @Input
     final Property<Boolean> tableOfContents = project.objects.property(Boolean)
 
@@ -59,16 +52,6 @@ class PandocRevealCompile extends DefaultTask {
 
     @TaskAction
     void compile() {
-        project.copy {
-            from revealJsFiles.collect {
-                project.zipTree(it)
-            }
-            if (assetFiles) {
-                from assetFiles
-            }
-            into destDir
-            includeEmptyDirs = false
-        }
         def command = [
                 pandocBinary.get(),
                 '--standalone',
@@ -101,6 +84,7 @@ class PandocRevealCompile extends DefaultTask {
         }
         execOperations.exec {
             commandLine command
+            workingDir = destDir.get()
             environment.putAll pandocEnvironment.get()
         }
     }
