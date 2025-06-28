@@ -134,6 +134,7 @@ class PandocRevealPlugin implements Plugin<Project> {
                     copyRevealResourcesTask
             pandocBinary = pandocTask.get().binary
             markdownFile = prepareMarkdownSourceTask.get().destFile
+            revealVersion = pandocReveal.revealVersion
             tableOfContents = pandocReveal.tableOfContents
             tableOfContentsDepth = pandocReveal.tableOfContentsDepth
             bibFile = pandocReveal.bibFile

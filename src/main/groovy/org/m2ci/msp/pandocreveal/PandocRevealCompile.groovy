@@ -23,6 +23,9 @@ class PandocRevealCompile extends DefaultTask {
     final RegularFileProperty markdownFile = project.objects.fileProperty()
 
     @Input
+    final Property<String> revealVersion = project.objects.property(String)
+
+    @Input
     final Property<Boolean> tableOfContents = project.objects.property(Boolean)
 
     @Input
@@ -56,7 +59,7 @@ class PandocRevealCompile extends DefaultTask {
                 pandocBinary.get(),
                 '--standalone',
                 '--to', 'revealjs',
-                '--variable', "revealjs-url=reveal.js-${project.pandocReveal.revealVersion.get()}",
+                '--variable', "revealjs-url=reveal.js-${revealVersion.get()}",
                 '--output', destDir.file('index.html').get().asFile,
                 markdownFile.get().asFile
         ]
