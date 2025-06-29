@@ -30,11 +30,8 @@ tasks.register('testPandoc') {
         def pandocBinary = pandoc.binary.get().asFile
         assert pandocBinary.exists()
         assert pandocBinary.canExecute()
-        def output = new ByteArrayOutputStream()
-        exec {
-            commandLine pandocBinary, '--version'
-            standardOutput = output
-        }
+        def proc = [pandocBinary, '--version'].execute()
+        def output = proc.text
         assert output.toString().readLines().first().split().last() == pandocReveal.pandocVersion.get()
     }
 }
