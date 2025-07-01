@@ -30,22 +30,16 @@ class PandocRevealPluginTest {
         assert result
     }
 
-    static boolean currentJavaVersionIs13OrLower() {
-        return JavaVersion.current() <= JavaVersion.VERSION_13
-    }
-
     @Test
-    @EnabledIf('currentJavaVersionIs13OrLower')
     void testPluginWithUnsupportedLegacyGradle() {
-        def gradle = provideGradle().withGradleVersion('6.1.1')
+        def gradle = provideGradle().withGradleVersion('7.1')
         def result = gradle.buildAndFail()
         assert result
     }
 
     @Test
-    @EnabledIf('currentJavaVersionIs13OrLower')
     void testPluginWithLegacyGradle() {
-        def gradle = provideGradle().withGradleVersion('6.2')
+        def gradle = provideGradle().withGradleVersion('7.2')
         def result = gradle.build()
         assert result
     }
