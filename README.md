@@ -12,17 +12,17 @@ Prerequisites
 
 [Java] must be installed.
 
-This plugin requires Gradle v6.2 or higher.
+This plugin requires Gradle v7.2 or higher.
 
 Usage
 -----
 
 See [here](https://plugins.gradle.org/plugin/org.m2ci.msp.pandocreveal) for usage instructions.
 
-When applying the plugin, the `compileReveal` task must be configured with a valid markdown source file:
+When applying the plugin, the `pandocReveal` extension in the `build.gradle` script must be configured with a valid markdown source file:
 
 ```gradle
-compileReveal {
+pandocReveal {
   markdownFile = file('src/source.md')
 
   // optionally, YAML header in separate file:
@@ -45,7 +45,7 @@ compileReveal {
 
 Note that Pandoc filters such as [mermaid-filter] must be installed separately.
 
-The generated slideshow will be created in `compileReveal.destDir` (default: `layout.buildDirectory.dir('slides')`)
+The generated slideshow will be created in `pandocReveal.destDir` (default value: `layout.buildDirectory.dir('slides')`)
 
 [Gradle]: https://gradle.org
 [Pandoc]: https://pandoc.org/
