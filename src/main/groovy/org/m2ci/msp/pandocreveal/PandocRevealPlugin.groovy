@@ -63,7 +63,7 @@ class PandocRevealPlugin implements Plugin<Project> {
         switch (OperatingSystem.current()) {
             case { it.isLinux() }:
                 pandocDependency << [
-                        classifier: 'linux-amd64',
+                        classifier: System.properties['os.arch'] == 'amd64' ? 'linux-amd64' : 'linux-arm64',
                         ext       : 'tar.gz'
                 ]
                 break
@@ -79,8 +79,11 @@ class PandocRevealPlugin implements Plugin<Project> {
         def pandocTask = project.tasks.register('pandoc', Copy) {
             def pandocDir = project.layout.buildDirectory.dir('pandoc')
 
+            def packageDir = "pandoc-${pandocReveal.pandocVersion.get()}"
+            if (OperatingSystem.current().isMacOsX())
+                packageDir += "-${System.properties['os.arch'] == 'aarch64' ? 'arm64' : 'x86_64'}"
             ext.binary = project.objects.fileProperty()
-                    .convention(pandocDir.get().file('bin/pandoc'))
+                    .convention(pandocDir.get().file("$packageDir/bin/pandoc"))
 
             into pandocDir
             from pandocConfig
@@ -94,9 +97,6 @@ class PandocRevealPlugin implements Plugin<Project> {
                 project.copy {
                     into pandocDir
                     from project.zipTree(zipDetails.file)
-                    filesMatching '*/bin/pandoc', { pandocBinary ->
-                        pandocBinary.path = 'bin/pandoc'
-                    }
                 }
             }
         }
