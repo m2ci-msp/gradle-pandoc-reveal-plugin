@@ -39,16 +39,17 @@ tasks.register('testPandoc') {
 tasks.register('testCompileReveal') {
     dependsOn tasks.named('compileReveal')
     doLast {
-        def actualFile = file("$buildDir/output/index.html")
-        assert actualFile.exists()
+        def htmlFile = file("$buildDir/output/index.html")
+        assert htmlFile.exists()
         def bibFile = file('refs.bib')
         assert bibFile.exists()
         def assetFiles = files("$buildDir/output/assets/asset.txt", "$buildDir/output/anotherAsset.txt")
         assetFiles.each {
             assert it.exists()
         }
-        def expectedFile = file('expected.html')
-        assert actualFile.text.contains('(foo 2017)')
+        def html = org.jsoup.Jsoup.parse(htmlFile, null)
+        def par = html.select('div.slides section#bar p')
+        assert par.text() == 'Baz (foo 2017)'
     }
 }
 
