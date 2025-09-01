@@ -1,7 +1,7 @@
 [versions]
 jsoup = "1.21.2"
 junit = "5.13.4"
-snakeyaml = "2.4"
+snakeyaml = "2.5"
 
 [libraries]
 snakeyaml = { module = "org.yaml:snakeyaml", version.ref = "snakeyaml" }
