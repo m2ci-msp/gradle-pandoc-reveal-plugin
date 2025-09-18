@@ -55,23 +55,15 @@ class PandocRevealPlugin implements Plugin<Project> {
         def pandocReveal = project.extensions.create('pandocReveal', PandocRevealExtension)
 
         def pandocConfig = project.configurations.create('pandoc')
-        def pandocDependency = [
-                group  : 'org.pandoc',
-                name   : 'pandoc',
-                version: pandocReveal.pandocVersion.get()
-        ]
+        def pandocDependency = "org.pandoc:pandoc:${pandocReveal.pandocVersion.get()}"
         switch (OperatingSystem.current()) {
             case { it.isLinux() }:
-                pandocDependency << [
-                        classifier: System.properties['os.arch'] == 'amd64' ? 'linux-amd64' : 'linux-arm64',
-                        ext       : 'tar.gz'
-                ]
+                pandocDependency += System.properties['os.arch'] == 'amd64' ? ':linux-amd64' : ':linux-arm64'
+                pandocDependency += '@tar.gz'
                 break
             case { it.isMacOsX() }:
-                pandocDependency << [
-                        classifier: System.properties['os.arch'] == 'x86_64' ? 'x86_64-macOS' : 'arm64-macOS',
-                        ext       : 'zip'
-                ]
+                pandocDependency += System.properties['os.arch'] == 'x86_64' ? ':x86_64-macOS' : ':arm64-macOS'
+                pandocDependency += '@zip'
                 break
         }
         project.dependencies.add(pandocConfig.name, pandocDependency)
@@ -102,12 +94,7 @@ class PandocRevealPlugin implements Plugin<Project> {
         }
 
         def revealConfig = project.configurations.create('reveal')
-        def revealDependency = [
-                group  : 'se.hakimel.lab',
-                name   : 'reveal.js',
-                version: pandocReveal.revealVersion.get(),
-                ext    : 'zip'
-        ]
+        def revealDependency = "se.hakimel.lab:reveal.js:${pandocReveal.revealVersion.get()}@zip"
         project.dependencies.add(revealConfig.name, revealDependency)
 
         def prepareMarkdownSourceTask = project.tasks.register('prepareMarkdownSource', PrepareMarkdownSource) {
