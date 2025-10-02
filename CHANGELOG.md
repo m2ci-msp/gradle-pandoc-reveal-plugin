@@ -8,6 +8,10 @@ Gradle Pandoc reveal.js plugin
 
 - Plugin is now configured via the new `pandocReveal` extension
 
+### Known issues
+
+- This plugin does not work properly with Gradle's configuration cache
+
 ### Added
 
 - Testing on Java 25
