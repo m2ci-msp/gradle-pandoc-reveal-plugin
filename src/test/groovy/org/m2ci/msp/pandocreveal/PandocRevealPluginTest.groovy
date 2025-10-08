@@ -1,11 +1,12 @@
 package org.m2ci.msp.pandocreveal
 
-import org.gradle.api.JavaVersion
 import org.gradle.testkit.runner.GradleRunner
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.condition.EnabledIf
 import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 import org.junit.jupiter.params.provider.ValueSource
+
+import java.util.stream.Stream
 
 import static org.gradle.testkit.runner.TaskOutcome.SUCCESS
 
@@ -44,15 +45,32 @@ class PandocRevealPluginTest {
         assert result
     }
 
+    static Stream<String> taskNames() {
+        Stream.of(
+                'testPandoc',
+                'testCompileReveal',
+                'testDate'
+        )
+    }
+
     @ParameterizedTest
-    @ValueSource(strings = [
-            'testPandoc',
-            'testCompileReveal',
-            'testDate'
-    ])
+    @MethodSource('taskNames')
     void testTasks(String taskName) {
+        runTask(taskName, false)
+    }
+
+    @ParameterizedTest
+    @MethodSource('taskNames')
+    void testTasksWithConfigurationCacheEnabled(String taskName) {
+        runTask(taskName, true)
+    }
+
+    void runTask(String taskName, boolean configurationCacheEnabled) {
         def gradle = provideGradle()
-        def result = gradle.withArguments('--warning-mode', 'all', '--stacktrace', taskName).build()
+        def args = ['--warning-mode', 'all', '--stacktrace', taskName]
+        if (configurationCacheEnabled)
+            args += '--configuration-cache'
+        def result = gradle.withArguments(args).build()
         assert result.task(":$taskName").outcome == SUCCESS
     }
 
