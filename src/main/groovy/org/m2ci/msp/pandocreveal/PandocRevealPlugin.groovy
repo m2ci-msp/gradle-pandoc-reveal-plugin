@@ -3,7 +3,6 @@ package org.m2ci.msp.pandocreveal
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.BasePlugin
-import org.gradle.api.tasks.Copy
 import org.gradle.api.tasks.bundling.Zip
 import org.gradle.internal.os.OperatingSystem
 
@@ -68,29 +67,13 @@ class PandocRevealPlugin implements Plugin<Project> {
         }
         project.dependencies.add(pandocConfig.name, pandocDependency)
 
-        def pandocTask = project.tasks.register('pandoc', Copy) {
-            def pandocDir = project.layout.buildDirectory.dir('pandoc')
-
+        def pandocTask = project.tasks.register('pandoc', CopyPandocResources) {
+            destDir = project.layout.buildDirectory.dir('pandoc')
+            configFiles = project.files(pandocConfig)
             def packageDir = "pandoc-${pandocReveal.pandocVersion.get()}"
             if (OperatingSystem.current().isMacOsX())
                 packageDir += "-${System.properties['os.arch'] == 'aarch64' ? 'arm64' : 'x86_64'}"
-            ext.binary = project.objects.fileProperty()
-                    .convention(pandocDir.get().file("$packageDir/bin/pandoc"))
-
-            into pandocDir
-            from pandocConfig
-            filesMatching '*.tar.gz', { tarDetails ->
-                project.copy {
-                    into pandocDir
-                    from project.tarTree(tarDetails.file)
-                }
-            }
-            filesMatching '*.zip', { zipDetails ->
-                project.copy {
-                    into pandocDir
-                    from project.zipTree(zipDetails.file)
-                }
-            }
+            binary = destDir.get().file("$packageDir/bin/pandoc")
         }
 
         def revealConfig = project.configurations.create('reveal')
@@ -102,18 +85,10 @@ class PandocRevealPlugin implements Plugin<Project> {
             headerFile = pandocReveal.headerFile
         }
 
-        def copyRevealResourcesTask = project.tasks.register('copyRevealResources', Copy) {
-            into pandocReveal.destDir
-            from revealConfig, {
-                filesMatching '*.zip', { zipDetails ->
-                    project.copy {
-                        into pandocReveal.destDir
-                        from project.zipTree(zipDetails.file)
-                    }
-                    zipDetails.exclude()
-                }
-            }
-            from pandocReveal.assetFiles
+        def copyRevealResourcesTask = project.tasks.register('copyRevealResources', CopyRevealResources) {
+            configFiles = project.files(revealConfig)
+            assetFiles = pandocReveal.assetFiles
+            destDir = pandocReveal.destDir
         }
 
         project.tasks.register 'compileReveal', PandocRevealCompile, {
