@@ -13,7 +13,7 @@ class PandocRevealExtension {
     Project project
 
     final Property<String> pandocVersion = project.objects.property(String)
-            .convention('3.8.2')
+            .convention('3.8.2.1')
     final Property<String> revealVersion = project.objects.property(String)
             .convention('5.2.1')
 
