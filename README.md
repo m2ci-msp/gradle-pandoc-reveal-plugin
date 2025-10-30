@@ -14,15 +14,6 @@ Prerequisites
 
 This plugin requires Gradle v7.2 or higher.
 
-### Warning
-
-This plugin does not yet work properly when Gradle's configuration cache is enabled.
-To avoid errors, ensure the configuration cache is disabled, e.g., by setting
-
-    org.gradle.configuration-cache=false
-
-in your `gradle.properties`, or running Gradle with the `--no-configuration-cache` option.
-
 Usage
 -----
 
