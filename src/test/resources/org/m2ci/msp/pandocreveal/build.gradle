@@ -1,26 +1,11 @@
 buildscript {
     dependencies {
-        classpath group: 'org.jsoup', name: 'jsoup', version: System.properties.jsoupVersion
+        classpath "org.jsoup:jsoup:$System.properties.jsoupVersion"
     }
 }
 
 plugins {
     id 'org.m2ci.msp.pandocreveal'
-}
-
-tasks.register('testPandoc') {
-    dependsOn tasks.named('pandoc')
-    doLast {
-        def pandocBinary = pandoc.binary.get().asFile
-        assert pandocBinary.exists()
-        assert pandocBinary.canExecute()
-        def output = new ByteArrayOutputStream()
-        exec {
-            commandLine pandocBinary, '--version'
-            standardOutput = output
-        }
-        assert output.toString().readLines().first().split().last() == pandoc.version.get()
-    }
 }
 
 tasks.register('makeAsset') {
@@ -31,37 +16,54 @@ tasks.register('makeAsset') {
     }
 }
 
-tasks.named('compileReveal').configure {
+pandocReveal {
     markdownFile = file('slides.md')
     headerFile = file('header.yaml')
+    assetFiles = fileTree('.').include('assets/**') + files(makeAsset)
     bibFile = file('refs.bib')
     destDir = layout.buildDirectory.dir('output')
-    assetFiles = fileTree('.').include('assets/**') + files(makeAsset)
+}
+
+tasks.register('testPandoc') {
+    def pandocTask = tasks.named('pandoc')
+    dependsOn pandocTask
+    def pandocBinary = pandocTask.get().binary
+    def pandocVersion = pandocReveal.pandocVersion.get()
+    doLast {
+        def pandocBinaryFile = pandocBinary.get().asFile
+        assert pandocBinaryFile.exists()
+        assert pandocBinaryFile.canExecute()
+        def proc = [pandocBinaryFile, '--version'].execute()
+        def output = proc.text
+        assert output.toString().readLines().first().split().last() == pandocVersion
+    }
 }
 
 tasks.register('testCompileReveal') {
     dependsOn tasks.named('compileReveal')
+    def pandocRevealDestDir = pandocReveal.destDir
     doLast {
-        def actualFile = file("$buildDir/output/index.html")
-        assert actualFile.exists()
-        def bibFile = file('refs.bib')
-        assert bibFile.exists()
-        def assetFiles = files("$buildDir/output/assets/asset.txt", "$buildDir/output/anotherAsset.txt")
+        def htmlFile = pandocRevealDestDir.file('index.html').get().asFile
+        assert htmlFile.exists()
+        def assetFiles = pandocRevealDestDir.files('assets/asset.txt', 'anotherAsset.txt')
         assetFiles.each {
             assert it.exists()
         }
-        def expectedFile = file('expected.html')
-        assert actualFile.text.contains('(foo 2017)')
+        def html = org.jsoup.Jsoup.parse(htmlFile, null)
+        def par = html.select('div.slides section#bar p')
+        assert par.text() == 'Baz (foo 2017)'
     }
 }
 
 tasks.register('testDate') {
     dependsOn tasks.named('compileReveal')
+    def indexFile = pandocReveal.destDir.file('index.html')
+    def headerFile = prepareMarkdownSource.headerFile.get().asFile
     doLast {
-        def htmlFile = file("$buildDir/output/index.html")
+        def htmlFile = indexFile.get().asFile
         def html = org.jsoup.Jsoup.parse(htmlFile, null)
         def actual = html.select('div.slides section').first().select('*.date').text()
-        def dateLine = compileReveal.headerFile.get().asFile.readLines().find { it.startsWith 'date:' } as String
+        def dateLine = headerFile.readLines().find { it.startsWith 'date:' } as String
         def date = new java.text.SimpleDateFormat('yyyy-MM-dd', Locale.US).parse(dateLine.tokenize(':').last().trim())
         def expected = date.format('EEE, MMM dd, yyyy')
         assert expected == actual
@@ -71,15 +73,18 @@ tasks.register('testDate') {
 if (Boolean.parseBoolean(findProperty('tocEnabled'))) {
     def tocTitle = 'Overview'
 
-    tasks.named('compileReveal').configure {
-        tableOfContents = true
-        tableOfContentsDepth = 3
+    tasks.named('prepareMarkdownSource').configure {
         doFirst {
             File headerFile = headerFile.get().asFile
             headerFile.withWriterAppend {
                 it.writeLine "toc-title: $tocTitle"
             }
         }
+    }
+
+    pandocReveal {
+        tableOfContents = true
+        tableOfContentsDepth = 3
     }
 
     tasks.register('testToc') {
@@ -108,7 +113,7 @@ if (Boolean.parseBoolean(findProperty('tocEnabled'))) {
 }
 
 if (Boolean.parseBoolean(findProperty('mermaidEnabled'))) {
-    tasks.named('compileReveal').configure {
+    pandocReveal {
         pandocFilters = ['mermaid-filter']
         pandocEnvironment = ['MERMAID_FILTER_FORMAT': 'svg']
     }

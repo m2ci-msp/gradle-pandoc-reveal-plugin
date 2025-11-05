@@ -11,8 +11,6 @@ class PandocRevealPlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
 
-        final String REVEALJS = 'revealJS'
-
         project.pluginManager.apply BasePlugin
 
         project.repositories {
@@ -53,34 +51,63 @@ class PandocRevealPlugin implements Plugin<Project> {
             }
         }
 
+        def pandocReveal = project.extensions.create('pandocReveal', PandocRevealExtension)
+
         def pandocConfig = project.configurations.create('pandoc')
-
-        project.tasks.register('pandoc', UnpackPandoc) {
-            config.set pandocConfig.name
-            version.set '3.7.0.2'
-        }
-
-        project.configurations.maybeCreate REVEALJS
-
-        project.ext.revealJsVersion = '5.2.1'
-
+        def pandocDependency = "org.pandoc:pandoc:${pandocReveal.pandocVersion.get()}"
         switch (OperatingSystem.current()) {
             case { it.isLinux() }:
-                project.dependencies.add('pandoc', [group: 'org.pandoc', name: 'pandoc', version: project.pandoc.version.get(), classifier: 'linux-amd64', ext: 'tar.gz'])
+                pandocDependency += System.properties['os.arch'] == 'amd64' ? ':linux-amd64' : ':linux-arm64'
+                pandocDependency += '@tar.gz'
                 break
             case { it.isMacOsX() }:
-                project.dependencies.add('pandoc', [group: 'org.pandoc', name: 'pandoc', version: project.pandoc.version.get(), classifier: System.properties['os.arch'] == 'x86_64' ? 'x86_64-macOS' : 'arm64-macOS', ext: 'zip'])
+                pandocDependency += System.properties['os.arch'] == 'x86_64' ? ':x86_64-macOS' : ':arm64-macOS'
+                pandocDependency += '@zip'
                 break
         }
-        project.dependencies.add REVEALJS, [group: 'se.hakimel.lab', name: 'reveal.js', version: project.revealJsVersion, ext: 'zip']
+        project.dependencies.add(pandocConfig.name, pandocDependency)
+
+        def pandocTask = project.tasks.register('pandoc', CopyPandocResources) {
+            destDir = project.layout.buildDirectory.dir('pandoc')
+            configFiles = project.files(pandocConfig)
+            def packageDir = "pandoc-${pandocReveal.pandocVersion.get()}"
+            if (OperatingSystem.current().isMacOsX())
+                packageDir += "-${System.properties['os.arch'] == 'aarch64' ? 'arm64' : 'x86_64'}"
+            binary = destDir.get().file("$packageDir/bin/pandoc")
+        }
+
+        def revealConfig = project.configurations.create('reveal')
+        def revealDependency = "se.hakimel.lab:reveal.js:${pandocReveal.revealVersion.get()}@zip"
+        project.dependencies.add(revealConfig.name, revealDependency)
+
+        def prepareMarkdownSourceTask = project.tasks.register('prepareMarkdownSource', PrepareMarkdownSource) {
+            markdownFile = pandocReveal.markdownFile
+            headerFile = pandocReveal.headerFile
+        }
+
+        def copyRevealResourcesTask = project.tasks.register('copyRevealResources', CopyRevealResources) {
+            configFiles = project.files(revealConfig)
+            assetFiles = pandocReveal.assetFiles
+            destDir = pandocReveal.destDir
+        }
 
         project.tasks.register 'compileReveal', PandocRevealCompile, {
-            revealJsFiles = project.files(project.configurations.getByName(REVEALJS))
-            destDir = project.layout.buildDirectory.dir('slides')
+            dependsOn pandocTask,
+                    copyRevealResourcesTask
+            pandocBinary = pandocTask.get().binary
+            markdownFile = prepareMarkdownSourceTask.get().destFile
+            revealVersion = pandocReveal.revealVersion
+            tableOfContents = pandocReveal.tableOfContents
+            tableOfContentsDepth = pandocReveal.tableOfContentsDepth
+            bibFile = pandocReveal.bibFile
+            cslFile = pandocReveal.cslFile
+            pandocFilters = pandocReveal.pandocFilters
+            pandocEnvironment = pandocReveal.pandocEnvironment
+            destDir = pandocReveal.destDir
         }
 
         project.tasks.register 'packageReveal', Zip, {
-            from project.tasks.named('compileReveal').get().destDir
+            from pandocReveal.destDir
         }
 
         project.artifacts {

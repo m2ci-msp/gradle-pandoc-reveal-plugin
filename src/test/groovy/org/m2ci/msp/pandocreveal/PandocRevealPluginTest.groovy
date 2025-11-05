@@ -1,11 +1,12 @@
 package org.m2ci.msp.pandocreveal
 
-import org.gradle.api.JavaVersion
 import org.gradle.testkit.runner.GradleRunner
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.condition.EnabledIf
 import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 import org.junit.jupiter.params.provider.ValueSource
+
+import java.util.stream.Stream
 
 import static org.gradle.testkit.runner.TaskOutcome.SUCCESS
 
@@ -30,36 +31,46 @@ class PandocRevealPluginTest {
         assert result
     }
 
-    static boolean currentJavaVersionIs13OrLower() {
-        return JavaVersion.current() <= JavaVersion.VERSION_13
-    }
-
     @Test
-    @EnabledIf('currentJavaVersionIs13OrLower')
     void testPluginWithUnsupportedLegacyGradle() {
-        def gradle = provideGradle().withGradleVersion('6.1.1')
+        def gradle = provideGradle().withGradleVersion('7.1')
         def result = gradle.buildAndFail()
         assert result
     }
 
     @Test
-    @EnabledIf('currentJavaVersionIs13OrLower')
     void testPluginWithLegacyGradle() {
-        def gradle = provideGradle().withGradleVersion('6.2')
+        def gradle = provideGradle().withGradleVersion('7.2')
         def result = gradle.build()
         assert result
     }
 
+    static Stream<String> taskNames() {
+        Stream.of(
+                'testPandoc',
+                'testCompileReveal',
+                'testDate'
+        )
+    }
+
     @ParameterizedTest
-    @ValueSource(strings = [
-            'testPandoc',
-            'testCompileReveal',
-            'assemble',
-            'testDate'
-    ])
+    @MethodSource('taskNames')
     void testTasks(String taskName) {
+        runTask(taskName, false)
+    }
+
+    @ParameterizedTest
+    @MethodSource('taskNames')
+    void testTasksWithConfigurationCacheEnabled(String taskName) {
+        runTask(taskName, true)
+    }
+
+    void runTask(String taskName, boolean configurationCacheEnabled) {
         def gradle = provideGradle()
-        def result = gradle.withArguments('--warning-mode', 'all', '--stacktrace', taskName).build()
+        def args = ['--warning-mode', 'all', '--stacktrace', taskName]
+        if (configurationCacheEnabled)
+            args += '--configuration-cache'
+        def result = gradle.withArguments(args).build()
         assert result.task(":$taskName").outcome == SUCCESS
     }
 
