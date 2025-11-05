@@ -1,6 +1,13 @@
 Gradle Pandoc reveal.js plugin
 ==============================
 
+[Unreleased]
+------------
+
+### Changes
+
+- [all changes since v0.6.0]
+
 [v0.6.0] (2025-11-04)
 ---------------------
 
@@ -254,6 +261,8 @@ Gradle Pandoc reveal.js plugin
 
 - Markdown to HTML5 conversion with installed Pandoc and reveal.js v3.5.0
 
+[Unreleased]: https://github.com/m2ci-msp/gradle-pandoc-reveal-plugin/tree/master
+[all changes since v0.6.0]: https://github.com/m2ci-msp/gradle-pandoc-reveal-plugin/compare/v0.6.0...HEAD
 [v0.6.0]: https://github.com/m2ci-msp/gradle-pandoc-reveal-plugin/releases/tag/v0.6.0
 [all changes since v0.5.10]: https://github.com/m2ci-msp/gradle-pandoc-reveal-plugin/compare/v0.5.10...v0.6.0
 [v0.5.10]: https://github.com/m2ci-msp/gradle-pandoc-reveal-plugin/releases/tag/v0.5.10
