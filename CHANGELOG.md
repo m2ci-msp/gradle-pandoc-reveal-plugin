@@ -8,7 +8,7 @@ Gradle Pandoc reveal.js plugin
 
 - [all changes since v0.6.0]
 
-[v0.6.0] (2025-11-04)
+[v0.6.0] (2025-11-05)
 ---------------------
 
 ### Breaking change
