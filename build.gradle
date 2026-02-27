@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'org.m2ci.msp'
-version = '0.6.2'
+version = '0.7.0-SNAPSHOT'
 description = 'Apply common build logic to a slideshow project using Pandoc and reveal.js'
 ext.url = 'https://github.com/m2ci-msp/gradle-pandoc-reveal-plugin'
 
