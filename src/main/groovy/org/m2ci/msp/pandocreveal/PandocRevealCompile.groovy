@@ -11,6 +11,7 @@ import org.gradle.process.ExecOperations
 
 import javax.inject.Inject
 
+@CacheableTask
 class PandocRevealCompile extends DefaultTask {
 
     private ExecOperations execOperations
