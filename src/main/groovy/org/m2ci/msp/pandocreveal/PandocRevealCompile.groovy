@@ -16,9 +16,11 @@ class PandocRevealCompile extends DefaultTask {
 
     private ExecOperations execOperations
 
+    @PathSensitive(PathSensitivity.RELATIVE)
     @InputFile
     final RegularFileProperty pandocBinary = project.objects.fileProperty()
 
+    @PathSensitive(PathSensitivity.RELATIVE)
     @InputFile
     final RegularFileProperty markdownFile = project.objects.fileProperty()
 
@@ -31,10 +33,12 @@ class PandocRevealCompile extends DefaultTask {
     @Input
     final Property<Integer> tableOfContentsDepth = project.objects.property(Integer)
 
+    @PathSensitive(PathSensitivity.RELATIVE)
     @Optional
     @InputFile
     final RegularFileProperty bibFile = project.objects.fileProperty()
 
+    @PathSensitive(PathSensitivity.RELATIVE)
     @Optional
     @InputFile
     final RegularFileProperty cslFile = project.objects.fileProperty()
