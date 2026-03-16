@@ -15,7 +15,7 @@ class PandocRevealExtension {
     final Property<String> pandocVersion = project.objects.property(String)
             .convention('3.9')
     final Property<String> revealVersion = project.objects.property(String)
-            .convention('5.2.1')
+            .convention('6.0.0')
 
     final RegularFileProperty markdownFile = project.objects.fileProperty()
     final RegularFileProperty headerFile = project.objects.fileProperty()
