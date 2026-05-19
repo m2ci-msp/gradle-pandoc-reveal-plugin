@@ -1,6 +1,6 @@
 [versions]
 jsoup = "1.22.2"
-junit = "6.0.3"
+junit = "6.1.0"
 snakeyaml = "2.6"
 
 [libraries]
