@@ -5,20 +5,26 @@ import org.gradle.api.file.ArchiveOperations
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileSystemOperations
+import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.OutputDirectory
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 
 import javax.inject.Inject
 
+@CacheableTask
 class CopyRevealResources extends DefaultTask {
 
     private ArchiveOperations archiveOperations
     private FileSystemOperations fileSystemOperations
 
+    @PathSensitive(PathSensitivity.RELATIVE)
     @InputFiles
     final ConfigurableFileCollection configFiles = project.files()
 
+    @PathSensitive(PathSensitivity.RELATIVE)
     @InputFiles
     final ConfigurableFileCollection assetFiles = project.files()
 
